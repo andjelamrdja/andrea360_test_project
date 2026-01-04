@@ -1,0 +1,24 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: andrea360_backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/andrea360
+    username: andrea360
+    password: andrea360
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # TEMP for now; later we switch to Flyway
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+
+logging:
+  level:
+    org.hibernate.SQL: warn

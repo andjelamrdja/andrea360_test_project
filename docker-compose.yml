@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: andrea360-db
+    environment:
+      POSTGRES_DB: andrea360
+      POSTGRES_USER: andrea360
+      POSTGRES_PASSWORD: andrea360
+    ports:
+      - "5433:5432"
+    volumes:
+      - andrea360_pgdata:/var/lib/postgresql/data
+
+volumes:
+  andrea360_pgdata:

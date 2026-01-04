@@ -1,0 +1,59 @@
+############################
+# OS / IDE
+############################
+.DS_Store
+Thumbs.db
+
+.idea/
+.vscode/
+*.iml
+
+############################
+# Logs
+############################
+*.log
+logs/
+
+############################
+# Environment files
+############################
+.env
+.env.*
+!.env.example
+
+############################
+# Backend (Spring Boot)
+############################
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.springBeans
+backend/*.log
+
+############################
+# Frontend (Angular / React)
+############################
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.angular/
+frontend/.cache/
+frontend/.npm/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+############################
+# Docker
+############################
+docker-compose/*.env
+docker-compose/data/
+docker-compose/volumes/
+
+############################
+# Temporary / generated files
+############################
+tmp/
+temp/
+*.swp
