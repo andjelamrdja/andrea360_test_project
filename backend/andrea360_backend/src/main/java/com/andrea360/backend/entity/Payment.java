@@ -31,12 +31,6 @@ public class Payment {
             foreignKey = @ForeignKey(name = "fk_payment_fitness_service"))
     private FitnessService fitnessService;
 
-    // optional: payment can be tied to a specific session
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "session_id",
-            foreignKey = @ForeignKey(name = "fk_payment_session"))
-    private Session session;
-
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal amount;
 

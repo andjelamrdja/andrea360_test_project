@@ -15,17 +15,12 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentResponse {
-
-
     private Long id;
 
     private Long memberId;
 
     private Long fitnessServiceId;
     private String fitnessServiceName;
-
-    private Long sessionId;                 // nullable
-    private OffsetDateTime sessionStartsAt; // nullable
 
     private BigDecimal amount;
     private String currency;
@@ -36,12 +31,10 @@ public class PaymentResponse {
     private OffsetDateTime createdAt;
     private OffsetDateTime paidAt;
 
-    // Stripe checkout session id / payment intent id
     private String externalRef;
 
     private Integer quantity;
     private boolean creditsApplied;
 
-    // Optional: useful when you implement Stripe Checkout
-    private String checkoutUrl; // nullable
+    private String checkoutUrl;
 }

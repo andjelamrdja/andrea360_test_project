@@ -6,7 +6,6 @@ import com.andrea360.backend.dto.payment.UpdatePaymentRequest;
 import com.andrea360.backend.entity.FitnessService;
 import com.andrea360.backend.entity.Member;
 import com.andrea360.backend.entity.Payment;
-import com.andrea360.backend.entity.Session;
 import com.andrea360.backend.entity.enums.PaymentMethod;
 import com.andrea360.backend.entity.enums.PaymentStatus;
 import com.andrea360.backend.exception.BusinessException;
@@ -14,7 +13,6 @@ import com.andrea360.backend.exception.NotFoundException;
 import com.andrea360.backend.repository.FitnessServiceRepository;
 import com.andrea360.backend.repository.MemberRepository;
 import com.andrea360.backend.repository.PaymentRepository;
-import com.andrea360.backend.repository.SessionRepository;
 import com.andrea360.backend.service.MemberCreditService;
 import com.andrea360.backend.service.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
     private final FitnessServiceRepository fitnessServiceRepository;
-    private final SessionRepository sessionRepository;
     private final MemberCreditService memberCreditService;
 
     @Override
@@ -45,16 +42,9 @@ public class PaymentServiceImpl implements PaymentService {
         FitnessService fitnessService = fitnessServiceRepository.findById(request.getFitnessServiceId())
                 .orElseThrow(() -> new NotFoundException("FitnessService not found: " + request.getFitnessServiceId()));
 
-        Session session = null;
-        if (request.getSessionId() != null) {
-            session = sessionRepository.findById(request.getSessionId())
-                    .orElseThrow(() -> new NotFoundException("Session not found: " + request.getSessionId()));
-        }
-
         Payment p = new Payment();
         p.setMember(member);
         p.setFitnessService(fitnessService);
-        p.setSession(session);
 
         int qty = (request.getQuantity() == null) ? 1 : request.getQuantity();
         if (qty < 1) {
@@ -77,7 +67,6 @@ public class PaymentServiceImpl implements PaymentService {
         p.setCurrency(currency);
 
         p.setMethod(PaymentMethod.ONLINE);
-
         p.setStatus(PaymentStatus.PENDING);
         p.setCreatedAt(OffsetDateTime.now());
 
@@ -172,25 +161,22 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private PaymentResponse map(Payment p) {
-        Long sessionId = (p.getSession() != null) ? p.getSession().getId() : null;
-        OffsetDateTime startsAt = (p.getSession() != null) ? p.getSession().getStartsAt() : null;
 
         return new PaymentResponse(
                 p.getId(),
                 p.getMember().getId(),
                 p.getFitnessService().getId(),
                 p.getFitnessService().getName(),
-                sessionId,
-                startsAt,
                 p.getAmount(),
                 p.getCurrency(),
-                p.getStatus().name(),
-                p.getMethod().name(),
+                p.getMethod(),
+                p.getStatus(),
                 p.getCreatedAt(),
                 p.getPaidAt(),
                 p.getExternalRef(),
                 p.getQuantity(),
-                p.isCreditsApplied()
+                p.isCreditsApplied(),
+                null
         );
     }
 

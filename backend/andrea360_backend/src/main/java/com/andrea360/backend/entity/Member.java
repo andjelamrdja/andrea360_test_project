@@ -33,6 +33,9 @@ public class Member {
     @Column(length = 30)
     private String phone;
 
+    @Column(name = "password_hash", nullable = false, length = 100)
+    private String passwordHash;
+
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 

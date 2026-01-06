@@ -24,6 +24,9 @@ public class MemberCreditServiceImpl implements MemberCreditService {
 
     @Override
     public MemberCredit getOrCreate(Long memberId, Long fitnessServiceId) {
+        if (memberId == null) throw new BusinessException("memberId is required.");
+        if (fitnessServiceId == null) throw new BusinessException("fitnessServiceId is required.");
+
         return memberCreditRepository
                 .findByMemberIdAndFitnessServiceId(memberId, fitnessServiceId)
                 .orElseGet(() -> {
@@ -51,14 +54,21 @@ public class MemberCreditServiceImpl implements MemberCreditService {
     }
 
     @Override
-    public void consumeCredit(Long memberId, Long fitnessServiceId) {
+    public void consumeCredits(Long memberId, Long fitnessServiceId, int amount) {
+        if (amount <= 0) throw new BusinessException("Credit amount must be positive.");
+
         MemberCredit mc = getOrCreate(memberId, fitnessServiceId);
 
-        if (mc.getAvailableCredits() <= 0) {
-            throw new BusinessException("Member has no credits for this service.");
+        if (mc.getAvailableCredits() < amount) {
+            throw new BusinessException("Member does not have enough credits for this service.");
         }
 
-        mc.setAvailableCredits(mc.getAvailableCredits() - 1);
+        mc.setAvailableCredits(mc.getAvailableCredits() - amount);
         memberCreditRepository.save(mc);
+    }
+
+    @Override
+    public void consumeCredit(Long memberId, Long fitnessServiceId) {
+        consumeCredits(memberId, fitnessServiceId, 1);
     }
 }

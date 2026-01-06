@@ -7,6 +7,7 @@ import com.andrea360.backend.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
+    @PreAuthorize("hasRole('MEMBER')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ReservationResponse create(@Valid @RequestBody CreateReservationRequest request) {
@@ -35,21 +37,23 @@ public class ReservationController {
         return reservationService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @GetMapping
     public List<ReservationResponse> getAll() {
         return reservationService.getAll();
     }
 
-    @PatchMapping("/{id}/confirm")
-    public ReservationResponse confirm(@PathVariable Long id) {
-        return reservationService.confirm(id);
-    }
+//    @PatchMapping("/{id}/confirm")
+//    public ReservationResponse confirm(@PathVariable Long id) {
+//        return reservationService.confirm(id);
+//    }
 
     @PatchMapping("/{id}/cancel")
     public ReservationResponse cancel(@PathVariable Long id) {
         return reservationService.cancel(id);
     }
 
+    @PreAuthorize("hasAnyRole('MEMBER','ADMIN','EMPLOYEE')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

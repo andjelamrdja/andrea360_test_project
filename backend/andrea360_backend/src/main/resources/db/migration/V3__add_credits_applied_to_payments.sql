@@ -1,0 +1,2 @@
+ALTER TABLE payments
+    ADD COLUMN credits_applied BOOLEAN NOT NULL DEFAULT FALSE;

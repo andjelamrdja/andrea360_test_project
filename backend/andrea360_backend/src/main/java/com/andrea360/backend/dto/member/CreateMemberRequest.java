@@ -32,4 +32,6 @@ public class CreateMemberRequest {
 
     @NotNull
     private Long locationId;
+
+    private String password;
 }

@@ -11,6 +11,7 @@ import com.andrea360.backend.repository.EmployeeRepository;
 import com.andrea360.backend.repository.LocationRepository;
 import com.andrea360.backend.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final LocationRepository locationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public EmployeeResponse create(CreateEmployeeRequest request) {
@@ -38,8 +40,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setLastName(request.getLastName());
         employee.setEmail(request.getEmail());
         employee.setPhone(request.getPhone());
-        employee.setRole(request.getRole());
+        employee.setRole(request.getAuthRole().name());
         employee.setLocation(location);
+        employee.setAuthRole(request.getAuthRole());
+        employee.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 
         Employee saved = employeeRepository.save(employee);
         return mapToResponse(saved);

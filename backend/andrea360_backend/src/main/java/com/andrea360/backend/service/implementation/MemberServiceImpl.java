@@ -11,6 +11,7 @@ import com.andrea360.backend.repository.LocationRepository;
 import com.andrea360.backend.repository.MemberRepository;
 import com.andrea360.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final LocationRepository locationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public MemberResponse create(CreateMemberRequest request) {
@@ -40,6 +42,8 @@ public class MemberServiceImpl implements MemberService {
         member.setPhone(request.getPhone());
         member.setDateOfBirth(request.getDateOfBirth());
         member.setLocation(location);
+        member.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+
 
         Member saved = memberRepository.save(member);
         return mapToResponse(saved);

@@ -16,7 +16,7 @@ public interface ReservationService {
 
     List<ReservationResponse> getAll();
 
-    ReservationResponse confirm(Long id);
+//    ReservationResponse confirm(Long id);
 
     ReservationResponse cancel(Long id);
 

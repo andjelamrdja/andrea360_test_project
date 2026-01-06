@@ -7,6 +7,7 @@ import com.andrea360.backend.service.SessionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,14 @@ public class SessionController {
 
     private final SessionService sessionService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public SessionResponse create(@Valid @RequestBody CreateSessionRequest request) {
         return sessionService.create(request);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @PutMapping("/{id}")
     public SessionResponse update(@PathVariable Long id,
                                   @Valid @RequestBody UpdateSessionRequest request) {
@@ -40,6 +43,7 @@ public class SessionController {
         return sessionService.getAll();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

@@ -7,12 +7,14 @@ import com.andrea360.backend.entity.Member;
 import com.andrea360.backend.entity.Payment;
 import com.andrea360.backend.entity.Reservation;
 import com.andrea360.backend.entity.Session;
+import com.andrea360.backend.entity.enums.PaymentStatus;
 import com.andrea360.backend.exception.BusinessException;
 import com.andrea360.backend.exception.NotFoundException;
 import com.andrea360.backend.repository.MemberRepository;
 import com.andrea360.backend.repository.PaymentRepository;
 import com.andrea360.backend.repository.ReservationRepository;
 import com.andrea360.backend.repository.SessionRepository;
+import com.andrea360.backend.service.MemberCreditService;
 import com.andrea360.backend.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,13 +33,16 @@ public class ReservationServiceImpl implements ReservationService {
     private final MemberRepository memberRepository;
     private final SessionRepository sessionRepository;
     private final PaymentRepository paymentRepository;
+    private final MemberCreditService memberCreditService;
+
+    private static final Set<String> ACTIVE_STATUSES = Set.of("CONFIRMED");
 
     @Override
     public ReservationResponse create(CreateReservationRequest request) {
         Member member = memberRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new NotFoundException("Member not found: " + request.getMemberId()));
 
-        Session session = sessionRepository.findById(request.getSessionId())
+        Session session = sessionRepository.findByIdForUpdate(request.getSessionId())
                 .orElseThrow(() -> new NotFoundException("Session not found: " + request.getSessionId()));
 
         if (reservationRepository.existsByMemberIdAndSessionId(member.getId(), session.getId())) {
@@ -49,24 +55,46 @@ public class ReservationServiceImpl implements ReservationService {
         if (request.getPaymentId() != null) {
             payment = paymentRepository.findById(request.getPaymentId())
                     .orElseThrow(() -> new NotFoundException("Payment not found: " + request.getPaymentId()));
+
+            if (!payment.getMember().getId().equals(member.getId())) {
+                throw new BusinessException("Payment does not belong to this member.");
+            }
+            if (!payment.getFitnessService().getId().equals(session.getFitnessService().getId())) {
+                throw new BusinessException("Payment is not for this session's fitness service.");
+            }
+            if (!PaymentStatus.PAID.equals(payment.getStatus())) {
+                throw new BusinessException("Payment must be PAID to be used for reservation.");
+            }
         }
 
         Reservation r = new Reservation();
         r.setMember(member);
         r.setSession(session);
         r.setPayment(payment);
-        r.setStatus("CREATED");
+        r.setStatus("CONFIRMED");
         r.setCreatedAt(OffsetDateTime.now());
         r.setNote(request.getNote());
 
         Reservation saved = reservationRepository.save(r);
+
+        memberCreditService.consumeCredit(
+                member.getId(),
+                session.getFitnessService().getId()
+        );
+
         return map(saved);
     }
 
     @Override
     public ReservationResponse update(Long id, UpdateReservationRequest request) {
+
         Reservation existing = reservationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Reservation not found: " + id));
+
+        if (!existing.getMember().getId().equals(request.getMemberId()) ||
+                !existing.getSession().getId().equals(request.getSessionId())) {
+            throw new BusinessException("Changing member/session is not allowed. Cancel and create a new reservation.");
+        }
 
         Member member = memberRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new NotFoundException("Member not found: " + request.getMemberId()));
@@ -90,6 +118,16 @@ public class ReservationServiceImpl implements ReservationService {
         if (request.getPaymentId() != null) {
             payment = paymentRepository.findById(request.getPaymentId())
                     .orElseThrow(() -> new NotFoundException("Payment not found: " + request.getPaymentId()));
+
+            if (!payment.getMember().getId().equals(member.getId())) {
+                throw new BusinessException("Payment does not belong to this member.");
+            }
+            if (!payment.getFitnessService().getId().equals(session.getFitnessService().getId())) {
+                throw new BusinessException("Payment is not for this session's fitness service.");
+            }
+            if (!"PAID".equalsIgnoreCase(payment.getStatus().name())) {
+                throw new BusinessException("Payment must be PAID to be used for reservation.");
+            }
         }
 
         existing.setMember(member);
@@ -122,34 +160,52 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.findAll().stream().map(this::map).toList();
     }
 
-    @Override
-    public ReservationResponse confirm(Long id) {
-        Reservation r = reservationRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Reservation not found: " + id));
-
-        if ("CANCELLED".equalsIgnoreCase(r.getStatus())) {
-            throw new BusinessException("Cancelled reservation cannot be confirmed.");
-        }
-
-        // confirm should still respect capacity (if others reserved in the meantime)
-        ensureCapacity(r.getSession().getId(), r.getSession().getCapacity(), id);
-
-        r.setStatus("CONFIRMED");
-        Reservation saved = reservationRepository.save(r);
-        return map(saved);
-    }
+//    @Override
+//    public ReservationResponse confirm(Long id) {
+//        Reservation r = reservationRepository.findById(id)
+//                .orElseThrow(() -> new NotFoundException("Reservation not found: " + id));
+//
+//        if ("CANCELLED".equalsIgnoreCase(r.getStatus())) {
+//            throw new BusinessException("Cancelled reservation cannot be confirmed.");
+//        }
+//
+//        // If already confirmed, return it
+//        if ("CONFIRMED".equalsIgnoreCase(r.getStatus())) {
+//            return map(r);
+//        }
+//
+//        // otherwise, still ensure capacity (active count)
+//        ensureCapacity(r.getSession().getId(), r.getSession().getCapacity(), id);
+//
+//        r.setStatus("CONFIRMED");
+//        Reservation saved = reservationRepository.save(r);
+//        return map(saved);
+//    }
 
     @Override
     public ReservationResponse cancel(Long id) {
         Reservation r = reservationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Reservation not found: " + id));
 
-        if (!"CANCELLED".equalsIgnoreCase(r.getStatus())) {
-            r.setStatus("CANCELLED");
-            r.setCancelledAt(OffsetDateTime.now());
-            r = reservationRepository.save(r);
+        if ("CANCELLED".equalsIgnoreCase(r.getStatus())) {
+            return map(r);
         }
 
+        boolean wasConfirmed = "CONFIRMED".equalsIgnoreCase(r.getStatus());
+
+        r.setStatus("CANCELLED");
+        r.setCancelledAt(OffsetDateTime.now());
+
+        // Refund credit only if it was confirmed (active)
+        if (wasConfirmed) {
+            memberCreditService.addCredits(
+                    r.getMember().getId(),
+                    r.getSession().getFitnessService().getId(),
+                    1
+            );
+        }
+
+        r = reservationRepository.save(r);
         return map(r);
     }
 
@@ -162,29 +218,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     private void ensureCapacity(Long sessionId, Integer sessionCapacity) {
-        ensureCapacity(sessionId, sessionCapacity, null);
-    }
+        if (sessionCapacity == null) return;
 
-    /**
-     * If confirming/updating existing reservation, you can exclude current reservation id from capacity checks if needed.
-     * For simplicity, we only count CONFIRMED reservations as taking capacity.
-     */
-    private void ensureCapacity(Long sessionId, Integer sessionCapacity, Long currentReservationId) {
-        if (sessionCapacity == null) return; // if you don't have capacity defined, don't block
+        long activeCount = reservationRepository.countBySessionIdAndStatusIn(sessionId, ACTIVE_STATUSES);
 
-        long confirmedCount = reservationRepository.countBySessionIdAndStatus(sessionId, "CONFIRMED");
-
-        // If confirming the current reservation and it is already confirmed, don't block
-        // (This avoids weird double-count situations in some flows.)
-        // We'll keep it simple: block only if confirmedCount >= capacity.
-        if (confirmedCount >= sessionCapacity) {
+        if (activeCount >= sessionCapacity) {
             throw new BusinessException("Session is full. No more reservations available.");
         }
     }
 
     private ReservationResponse map(Reservation r) {
         Long paymentId = (r.getPayment() != null) ? r.getPayment().getId() : null;
-        String paymentStatus = (r.getPayment() != null) ? r.getPayment().getStatus() : null;
+        String paymentStatus = (r.getPayment() != null) ? r.getPayment().getStatus().name() : null;
 
         // Member full name is optional
         String fullName = null;

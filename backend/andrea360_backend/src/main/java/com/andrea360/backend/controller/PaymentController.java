@@ -7,6 +7,7 @@ import com.andrea360.backend.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
+    @PreAuthorize("hasRole('MEMBER')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentResponse create(@Valid @RequestBody CreatePaymentRequest request) {
@@ -29,16 +31,19 @@ public class PaymentController {
         return paymentService.update(id, request);
     }
 
+    @PreAuthorize("hasAnyRole('MEMBER','ADMIN','EMPLOYEE')")
     @GetMapping("/{id}")
     public PaymentResponse getById(@PathVariable Long id) {
         return paymentService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @GetMapping
     public List<PaymentResponse> getAll() {
         return paymentService.getAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/mark-paid")
     public PaymentResponse markPaid(@PathVariable Long id) {
         return paymentService.markAsPaid(id);

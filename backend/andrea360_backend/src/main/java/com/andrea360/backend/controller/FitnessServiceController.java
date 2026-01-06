@@ -7,6 +7,7 @@ import com.andrea360.backend.service.FitnessServiceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,15 @@ public class FitnessServiceController {
 
     private final FitnessServiceService fitnessServiceService;
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public FitnessServiceResponse create(@Valid @RequestBody CreateFitnessServiceRequest request) {
         return fitnessServiceService.create(request);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @PutMapping("/{id}")
     public FitnessServiceResponse update(@PathVariable Long id,
                                          @Valid @RequestBody UpdateFitnessServiceRequest request) {
@@ -40,6 +44,7 @@ public class FitnessServiceController {
         return fitnessServiceService.getAll();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

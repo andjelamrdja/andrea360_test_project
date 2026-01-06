@@ -1,5 +1,6 @@
 package com.andrea360.backend.dto.employee;
 
+import com.andrea360.backend.entity.enums.EmployeeAuthRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,9 +28,8 @@ public class CreateEmployeeRequest {
     @Size(max = 30)
     private String phone;
 
-    @NotBlank
-    @Size(max = 60)
-    private String role;
+    private String password;
+    private EmployeeAuthRole authRole;
 
     @NotNull
     private Long locationId;
