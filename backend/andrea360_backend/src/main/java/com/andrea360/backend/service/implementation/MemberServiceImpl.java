@@ -8,6 +8,7 @@ import com.andrea360.backend.entity.Member;
 import com.andrea360.backend.exception.BusinessException;
 import com.andrea360.backend.exception.NotFoundException;
 import com.andrea360.backend.repository.LocationRepository;
+import com.andrea360.backend.repository.MemberCreditRepository;
 import com.andrea360.backend.repository.MemberRepository;
 import com.andrea360.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final LocationRepository locationRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MemberCreditRepository memberCreditRepository;
 
     @Override
     public MemberResponse create(CreateMemberRequest request) {
@@ -99,6 +101,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private MemberResponse mapToResponse(Member m) {
+        Integer totalCredits = memberCreditRepository.sumCreditsByMemberId(m.getId());
         return new MemberResponse(
                 m.getId(),
                 m.getFirstName(),
@@ -107,7 +110,8 @@ public class MemberServiceImpl implements MemberService {
                 m.getPhone(),
                 m.getDateOfBirth(),
                 m.getLocation().getId(),
-                m.getLocation().getName()
+                m.getLocation().getName(),
+                totalCredits
         );
     }
 }

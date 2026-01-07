@@ -76,16 +76,24 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponse update(Long id, UpdatePaymentRequest request) {
-
         Payment existing = paymentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Payment not found: " + id));
 
-        // 1) Once PAID, don't allow modifications (keeps audit + prevents weird states)
-        if (existing.getStatus() == PaymentStatus.PAID) {
-            throw new BusinessException("Paid payments cannot be updated.");
+        // allow admin to change status (controller restricts it)
+        if (request.getStatus() != null && request.getStatus() != existing.getStatus()) {
+            existing.setStatus(request.getStatus());
+
+            if (request.getStatus() == PaymentStatus.PAID) {
+                if (existing.getPaidAt() == null) {
+                    existing.setPaidAt(OffsetDateTime.now());
+                }
+                applyCreditsIfNeeded(existing);
+            }
+            // Optional: if setting away from PAID, you can null paidAt (depends on your audit needs)
+            // else if (existing.getStatus() != PaymentStatus.PAID) { existing.setPaidAt(null); }
         }
 
-        // 2) External reference is allowed (Stripe session/payment intent id)
+        // keep your existing fields logic
         if (request.getExternalRef() != null && !request.getExternalRef().isBlank()) {
             String newRef = request.getExternalRef().trim();
             if (existing.getExternalRef() == null || !existing.getExternalRef().equals(newRef)) {
@@ -96,18 +104,13 @@ public class PaymentServiceImpl implements PaymentService {
             existing.setExternalRef(newRef);
         }
 
-        // 3) Only allow changing quantity/amount/currency while PENDING (optional)
         if (request.getQuantity() != null) {
-            if (request.getQuantity() < 1) {
-                throw new BusinessException("Quantity must be at least 1.");
-            }
+            if (request.getQuantity() < 1) throw new BusinessException("Quantity must be at least 1.");
             existing.setQuantity(request.getQuantity());
         }
 
         if (request.getAmount() != null) {
-            if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-                throw new BusinessException("Amount must be greater than 0.");
-            }
+            if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) throw new BusinessException("Amount must be greater than 0.");
             existing.setAmount(request.getAmount());
         }
 
@@ -165,6 +168,9 @@ public class PaymentServiceImpl implements PaymentService {
         return new PaymentResponse(
                 p.getId(),
                 p.getMember().getId(),
+                p.getMember().getFirstName(),
+                p.getMember().getLocation().getId(),
+                p.getMember().getLocation().getName(),
                 p.getFitnessService().getId(),
                 p.getFitnessService().getName(),
                 p.getAmount(),

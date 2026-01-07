@@ -22,4 +22,6 @@ public class MemberResponse {
 
     private Long locationId;
     private String locationName;
+
+    private Integer totalCredits;
 }

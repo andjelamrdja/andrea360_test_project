@@ -25,6 +25,7 @@ public class AuthController {
         String authRole = null;
         if (roles.contains("ROLE_ADMIN")) authRole = "ADMIN";
         else if (roles.contains("ROLE_EMPLOYEE")) authRole = "EMPLOYEE";
+        else if (roles.contains("ROLE_MEMBER")) authRole = "MEMBER";
 
         return new AuthMeResponse(
                 auth.getName(),

@@ -26,6 +26,7 @@ public class PaymentController {
         return paymentService.create(request);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public PaymentResponse update(@PathVariable Long id, @Valid @RequestBody UpdatePaymentRequest request) {
         return paymentService.update(id, request);

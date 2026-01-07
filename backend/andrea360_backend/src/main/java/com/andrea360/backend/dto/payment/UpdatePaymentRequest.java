@@ -1,5 +1,6 @@
 package com.andrea360.backend.dto.payment;
 
+import com.andrea360.backend.entity.enums.PaymentStatus;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +23,5 @@ public class UpdatePaymentRequest {
     @Size(max = 10)
     private String currency;
 
+    private PaymentStatus status;
 }

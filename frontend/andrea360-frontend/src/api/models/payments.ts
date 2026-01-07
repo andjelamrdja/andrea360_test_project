@@ -1,0 +1,51 @@
+import { http } from "../http";
+
+export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "CANCELLED";
+export type PaymentMethod = "CASH" | "CARD" | "ONLINE";
+
+export type UpdatePaymentRequest = {
+  status?: PaymentStatus;
+  externalRef?: string;
+  quantity?: number;
+  amount?: string;
+  currency?: string;
+};
+
+export type PaymentResponse = {
+  id: number;
+
+  memberId: number;
+  memberName: string;
+
+  locationId: number;
+  locationName: string;
+
+  fitnessServiceId: number;
+  fitnessServiceName: string;
+
+  amount: string;
+  currency: string;
+
+  method: PaymentMethod;
+  status: PaymentStatus;
+
+  createdAt: string; // ISO
+  paidAt?: string | null;
+
+  externalRef?: string | null;
+
+  quantity: number;
+  creditsApplied: boolean;
+
+  checkoutUrl?: string | null;
+};
+
+export async function getPayments(): Promise<PaymentResponse[]> {
+  const res = await http.get("/api/payments");
+  return res.data;
+}
+
+export async function updatePayment(id: number, payload: UpdatePaymentRequest) {
+  const res = await http.put(`/api/payments/${id}`, payload);
+  return res.data as PaymentResponse;
+}

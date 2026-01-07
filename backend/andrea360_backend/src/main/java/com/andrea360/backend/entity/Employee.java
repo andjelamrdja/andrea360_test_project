@@ -40,7 +40,7 @@ public class Employee {
     @Column(name = "auth_role", nullable = false, length = 30)
     private EmployeeAuthRole authRole = EmployeeAuthRole.EMPLOYEE;
 
-    //  For authentication (store bcrypt hash)
+//    //  For authentication (store bcrypt hash)
     @Column(name = "password_hash", nullable = false, length = 100)
     private String passwordHash;
 
@@ -49,6 +49,7 @@ public class Employee {
             foreignKey = @ForeignKey(name = "fk_employee_location"))
     private Location location;
 
-    private String password;
+//    @Column(name = "password_hash", nullable = false)
+//    private String password;
 
 }

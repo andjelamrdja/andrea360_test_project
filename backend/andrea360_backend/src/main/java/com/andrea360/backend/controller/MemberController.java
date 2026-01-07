@@ -39,7 +39,7 @@ public class MemberController {
         return memberService.getById(id);
     }
 
-    @PreAuthorize("hasAnyRole()('EMPLOYEE','ADMIN')")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','ADMIN')")
     @GetMapping
     public List<MemberResponse> getAll() {
         return memberService.getAll();

@@ -18,6 +18,9 @@ public class PaymentResponse {
     private Long id;
 
     private Long memberId;
+    private String memberName;
+    private Long locationId;
+    private String locationName;
 
     private Long fitnessServiceId;
     private String fitnessServiceName;
