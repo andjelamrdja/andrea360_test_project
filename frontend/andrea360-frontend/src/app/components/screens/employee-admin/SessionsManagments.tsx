@@ -54,7 +54,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 
 type Props = {
   userRole: "admin" | "employee";
-  locationId?: number; // use number in your app; if you have string, we can adjust
+  locationId?: number;
+  employeeId?: number | null;
 };
 
 type FormState = {
@@ -67,7 +68,7 @@ type FormState = {
   endTime: string; // hh:mm
 
   capacity: string;
-  status: SessionStatus; // edit only (we still store it)
+  status: SessionStatus;
 };
 
 function toLocalDate(iso: string) {
@@ -84,13 +85,12 @@ function toLocalTime(iso: string) {
   return `${hh}:${mm}`;
 }
 
-// Builds ISO string from local date+time in user's current timezone
 function combineLocal(date: string, time: string) {
   // date: 2026-01-07, time: 08:00
   const [y, m, d] = date.split("-").map(Number);
   const [hh, mm] = time.split(":").map(Number);
   const dt = new Date(y, (m ?? 1) - 1, d ?? 1, hh ?? 0, mm ?? 0, 0, 0);
-  return dt.toISOString(); // backend expects OffsetDateTime; ISO string is fine
+  return dt.toISOString();
 }
 
 function statusBadge(status: string) {
@@ -99,7 +99,11 @@ function statusBadge(status: string) {
   return { label: "Scheduled", variant: "secondary" as const };
 }
 
-export function SessionsManagement({ userRole, locationId }: Props) {
+export function SessionsManagement({
+  userRole,
+  locationId,
+  employeeId,
+}: Props) {
   const [sessions, setSessions] = useState<SessionResponse[]>([]);
   const [locations, setLocations] = useState<LocationResponse[]>([]);
   const [services, setServices] = useState<FitnessServiceResponse[]>([]);
@@ -117,14 +121,40 @@ export function SessionsManagement({ userRole, locationId }: Props) {
 
   const [formData, setFormData] = useState<FormState>({
     fitnessServiceId: "",
-    locationId: locationId ? String(locationId) : "",
-    trainerEmployeeId: "",
+    locationId: userRole === "employee" && locationId ? String(locationId) : "",
+    trainerEmployeeId:
+      userRole === "employee" && employeeId ? String(employeeId) : "",
     date: "",
     startTime: "",
     endTime: "",
     capacity: "",
     status: "SCHEDULED",
   });
+
+  useEffect(() => {
+    if (userRole !== "admin") return;
+
+    const serviceId = Number(formData.fitnessServiceId);
+    if (!serviceId) {
+      setFormData((p) => ({
+        ...p,
+        locationId: "",
+        trainerEmployeeId: "",
+      }));
+      return;
+    }
+
+    const svc = services.find((s) => s.id === serviceId);
+    if (!svc) return;
+
+    const newLocationId = String(svc.locationId);
+
+    setFormData((p) => ({
+      ...p,
+      locationId: newLocationId,
+      trainerEmployeeId: "",
+    }));
+  }, [formData.fitnessServiceId, services, userRole]);
 
   async function load() {
     setIsLoading(true);
@@ -154,21 +184,31 @@ export function SessionsManagement({ userRole, locationId }: Props) {
   }, []);
 
   function resetForm() {
+    setFormData((prev) => ({
+      fitnessServiceId: "",
+      locationId: userRole === "employee" ? String(locationId ?? "") : "",
+      trainerEmployeeId:
+        userRole === "employee" ? String(employeeId ?? "") : "",
+      date: "",
+      startTime: "",
+      endTime: "",
+      capacity: "",
+      status: "SCHEDULED",
+    }));
+  }
+  function handleAddNew() {
+    setEditingSession(null);
     setFormData({
       fitnessServiceId: "",
-      locationId: locationId ? String(locationId) : "",
-      trainerEmployeeId: "",
+      locationId: userRole === "employee" ? String(locationId ?? "") : "",
+      trainerEmployeeId:
+        userRole === "employee" ? String(employeeId ?? "") : "",
       date: "",
       startTime: "",
       endTime: "",
       capacity: "",
       status: "SCHEDULED",
     });
-  }
-
-  function handleAddNew() {
-    setEditingSession(null);
-    resetForm();
     setIsDialogOpen(true);
   }
 
@@ -192,31 +232,57 @@ export function SessionsManagement({ userRole, locationId }: Props) {
     setIsSaving(true);
     setError(null);
 
+    // ----- parse ids -----
     const fitnessServiceIdNum = Number(formData.fitnessServiceId);
-    const locationIdNum = Number(formData.locationId);
-    const trainerIdNum = Number(formData.trainerEmployeeId);
     const capNum = Number(formData.capacity);
+
+    const locationIdNum =
+      userRole === "employee"
+        ? Number(locationId)
+        : Number(formData.locationId);
+
+    const trainerIdNum =
+      userRole === "employee"
+        ? Number(employeeId)
+        : Number(formData.trainerEmployeeId);
 
     if (!fitnessServiceIdNum || Number.isNaN(fitnessServiceIdNum)) {
       setIsSaving(false);
       setError("Please select a service.");
       return;
     }
-    if (!locationIdNum || Number.isNaN(locationIdNum)) {
-      setIsSaving(false);
-      setError("Please select a location.");
-      return;
+
+    if (userRole === "employee") {
+      if (!locationIdNum || Number.isNaN(locationIdNum)) {
+        setIsSaving(false);
+        setError("Your employee location is missing. Please re-login.");
+        return;
+      }
+      if (!trainerIdNum || Number.isNaN(trainerIdNum)) {
+        setIsSaving(false);
+        setError("Your employee id is missing. Please re-login.");
+        return;
+      }
+    } else {
+      // admin picks location + trainer
+      if (!locationIdNum || Number.isNaN(locationIdNum)) {
+        setIsSaving(false);
+        setError("Please select a location.");
+        return;
+      }
+      if (!trainerIdNum || Number.isNaN(trainerIdNum)) {
+        setIsSaving(false);
+        setError("Please select a trainer.");
+        return;
+      }
     }
-    if (!trainerIdNum || Number.isNaN(trainerIdNum)) {
-      setIsSaving(false);
-      setError("Please select a trainer.");
-      return;
-    }
+
     if (!formData.date || !formData.startTime || !formData.endTime) {
       setIsSaving(false);
       setError("Please set date, start time and end time.");
       return;
     }
+
     if (!capNum || Number.isNaN(capNum) || capNum < 1) {
       setIsSaving(false);
       setError("Capacity must be a number >= 1.");
@@ -226,30 +292,33 @@ export function SessionsManagement({ userRole, locationId }: Props) {
     const startsAt = combineLocal(formData.date, formData.startTime);
     const endsAt = combineLocal(formData.date, formData.endTime);
 
+    if (new Date(endsAt).getTime() <= new Date(startsAt).getTime()) {
+      setIsSaving(false);
+      setError("End time must be after start time.");
+      return;
+    }
+
+    const basePayload = {
+      startsAt,
+      endsAt,
+      capacity: capNum,
+      locationId: locationIdNum,
+      fitnessServiceId: fitnessServiceIdNum,
+      trainerEmployeeId: trainerIdNum,
+    };
+
     try {
       if (editingSession) {
         const updated = await updateSession(editingSession.id, {
-          startsAt,
-          endsAt,
-          capacity: capNum,
+          ...basePayload,
           status: formData.status,
-          locationId: locationIdNum,
-          fitnessServiceId: fitnessServiceIdNum,
-          trainerEmployeeId: trainerIdNum,
         });
 
         setSessions((prev) =>
           prev.map((x) => (x.id === updated.id ? updated : x))
         );
       } else {
-        const created = await createSession({
-          startsAt,
-          endsAt,
-          capacity: capNum,
-          locationId: locationIdNum,
-          fitnessServiceId: fitnessServiceIdNum,
-          trainerEmployeeId: trainerIdNum,
-        });
+        const created = await createSession(basePayload);
 
         setSessions((prev) => [created, ...prev]);
       }
@@ -284,15 +353,24 @@ export function SessionsManagement({ userRole, locationId }: Props) {
     }
   }
 
-  // Filter for employee location (frontend-only; backend returns all)
   const scopedSessions = useMemo(() => {
-    if (userRole === "employee" && locationId) {
-      return sessions.filter((s) => s.locationId === locationId);
+    if (userRole === "employee") {
+      if (employeeId) {
+        return sessions.filter((s) => s.trainerEmployeeId === employeeId);
+      }
+      return [];
     }
     return sessions;
-  }, [sessions, userRole, locationId]);
+  }, [sessions, userRole, employeeId]);
 
-  // Tabs: today/upcoming/all
+  const scopedServices = useMemo(() => {
+    if (userRole === "employee") {
+      if (!locationId) return [];
+      return services.filter((s) => s.locationId === locationId);
+    }
+    return services;
+  }, [services, userRole, locationId]);
+
   const todayKey = useMemo(() => {
     const now = new Date();
     const yyyy = now.getFullYear();
@@ -309,6 +387,24 @@ export function SessionsManagement({ userRole, locationId }: Props) {
     () => scopedSessions.filter((s) => toLocalDate(s.startsAt) > todayKey),
     [scopedSessions, todayKey]
   );
+
+  const selectedService = useMemo(() => {
+    const id = Number(formData.fitnessServiceId);
+    if (!id) return null;
+    return services.find((s) => s.id === id) ?? null;
+  }, [formData.fitnessServiceId, services]);
+
+  const serviceLocationId = selectedService?.locationId ?? null;
+
+  const filteredLocations = useMemo(() => {
+    if (!serviceLocationId) return locations;
+    return locations.filter((l) => l.id === serviceLocationId);
+  }, [locations, serviceLocationId]);
+
+  const filteredTrainers = useMemo(() => {
+    if (!serviceLocationId) return employees;
+    return employees.filter((e) => e.locationId === serviceLocationId);
+  }, [employees, serviceLocationId]);
 
   const renderCard = (s: SessionResponse) => {
     const dateStr = new Date(s.startsAt).toLocaleDateString("en-US", {
@@ -345,10 +441,15 @@ export function SessionsManagement({ userRole, locationId }: Props) {
                 </div>
               </div>
 
-              {userRole === "admin" && (
-                <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
+              {userRole === "admin" ? (
+                <div className="flex items-center gap-2 text-sm text-slate-500 mt-2">
                   <MapPin className="w-4 h-4" />
                   {s.locationName}
+                </div>
+              ) : (
+                <div className="text-sm text-slate-500 mt-2">
+                  Location:{" "}
+                  <span className="font-medium">{s.locationName}</span>
                 </div>
               )}
 
@@ -357,10 +458,11 @@ export function SessionsManagement({ userRole, locationId }: Props) {
                   <Users className="w-4 h-4 text-slate-400" />
                   Capacity: <span className="font-semibold">{s.capacity}</span>
                 </div>
+
                 <div className="text-slate-500">
                   Trainer:{" "}
                   <span className="font-medium text-slate-700">
-                    {s.trainerName}
+                    {userRole === "admin" ? s.trainerName : "You"}
                   </span>
                 </div>
               </div>
@@ -381,6 +483,7 @@ export function SessionsManagement({ userRole, locationId }: Props) {
               <Edit className="w-4 h-4 mr-2" />
               Edit
             </Button>
+
             <Button
               variant="outline"
               size="sm"
@@ -438,7 +541,7 @@ export function SessionsManagement({ userRole, locationId }: Props) {
                     <SelectValue placeholder="Select service" />
                   </SelectTrigger>
                   <SelectContent>
-                    {services.map((svc) => (
+                    {scopedServices.map((svc) => (
                       <SelectItem key={svc.id} value={String(svc.id)}>
                         {svc.name}
                       </SelectItem>
@@ -447,7 +550,7 @@ export function SessionsManagement({ userRole, locationId }: Props) {
                 </Select>
               </div>
 
-              {userRole === "admin" && (
+              {userRole === "admin" ? (
                 <div>
                   <Label className="p-1">Location</Label>
                   <Select
@@ -455,41 +558,65 @@ export function SessionsManagement({ userRole, locationId }: Props) {
                     onValueChange={(value) =>
                       setFormData((p) => ({ ...p, locationId: value }))
                     }
+                    disabled={!!serviceLocationId}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select location" />
                     </SelectTrigger>
                     <SelectContent>
-                      {locations.map((loc) => (
+                      {filteredLocations.map((loc) => (
                         <SelectItem key={loc.id} value={String(loc.id)}>
                           {loc.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+
+                  {serviceLocationId && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      Location is locked to the selected service.
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="rounded-lg border border-slate-200 p-3 text-sm text-slate-600">
+                  Location is fixed to your assigned gym.
                 </div>
               )}
 
-              <div>
-                <Label className="p-1">Trainer</Label>
-                <Select
-                  value={formData.trainerEmployeeId}
-                  onValueChange={(value) =>
-                    setFormData((p) => ({ ...p, trainerEmployeeId: value }))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select trainer" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {employees.map((emp) => (
-                      <SelectItem key={emp.id} value={String(emp.id)}>
-                        {emp.firstName} {emp.lastName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {userRole === "admin" ? (
+                <div>
+                  <Label className="p-1">Trainer</Label>
+                  <Select
+                    value={formData.trainerEmployeeId}
+                    onValueChange={(value) =>
+                      setFormData((p) => ({ ...p, trainerEmployeeId: value }))
+                    }
+                    disabled={!formData.fitnessServiceId}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select trainer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {filteredTrainers.map((emp) => (
+                        <SelectItem key={emp.id} value={String(emp.id)}>
+                          {emp.firstName} {emp.lastName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {!formData.fitnessServiceId && (
+                    <p className="text-xs text-slate-500 mt-1">
+                      Select a service first to see available trainers.
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="rounded-lg border border-slate-200 p-3 text-sm text-slate-600">
+                  Trainer is automatically set to you.
+                </div>
+              )}
 
               {editingSession && (
                 <div>

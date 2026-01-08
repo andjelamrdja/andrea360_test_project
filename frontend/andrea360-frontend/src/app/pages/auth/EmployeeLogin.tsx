@@ -26,7 +26,6 @@ export function EmployeeLogin() {
     try {
       const me = await loginBasic(email, password);
 
-      // Guard: user picked Employee login but credentials belong to a member.
       if (me.userType === "MEMBER") {
         setError(
           "These credentials belong to a MEMBER account. Please use Member Login."

@@ -18,4 +18,6 @@ public class FitnessServiceResponse {
     private Integer durationMinutes;
     private BigDecimal price;
     private boolean active;
+    private Long locationId;
+    private String locationName;
 }

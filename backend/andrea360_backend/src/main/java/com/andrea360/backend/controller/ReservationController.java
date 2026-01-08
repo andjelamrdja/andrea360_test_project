@@ -59,4 +59,11 @@ public class ReservationController {
     public void delete(@PathVariable Long id) {
         reservationService.delete(id);
     }
+
+    @PreAuthorize("hasRole('MEMBER')")
+    @GetMapping("/my")
+    public List<ReservationResponse> my(@RequestParam Long memberId) {
+        return reservationService.getMyReservations(memberId);
+    }
+
 }

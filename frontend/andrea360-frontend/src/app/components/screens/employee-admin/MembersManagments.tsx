@@ -77,7 +77,7 @@ type FormState = {
   phone: string;
   dateOfBirth: string; // yyyy-mm-dd
   locationId: string; // select
-  password: string; // create only (optional)
+  password: string; // create
 };
 
 export function MembersManagement({ userRole, locationId }: Props) {
@@ -152,7 +152,7 @@ export function MembersManagement({ userRole, locationId }: Props) {
       lastName: m.lastName,
       email: m.email,
       phone: m.phone ?? "",
-      dateOfBirth: m.dateOfBirth, // LocalDate string
+      dateOfBirth: m.dateOfBirth,
       locationId: String(m.locationId),
       password: "",
     });
@@ -489,7 +489,6 @@ export function MembersManagement({ userRole, locationId }: Props) {
 
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      {/* optional icon */}
                       <CreditCard className="w-4 h-4 text-slate-400" />
 
                       <Badge

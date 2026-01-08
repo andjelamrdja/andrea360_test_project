@@ -21,4 +21,6 @@ public interface ReservationService {
     ReservationResponse cancel(Long id);
 
     void delete(Long id);
+    List<ReservationResponse> getMyReservations(Long memberId);
+
 }

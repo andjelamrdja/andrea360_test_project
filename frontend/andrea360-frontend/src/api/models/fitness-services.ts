@@ -5,8 +5,10 @@ export type FitnessServiceResponse = {
   name: string;
   description: string | null;
   durationMinutes: number;
-  price: number; // BigDecimal comes as JSON number in most setups
+  price: number;
   active: boolean;
+  locationId?: number;
+  locationName?: string;
 };
 
 export type CreateFitnessServiceRequest = {
@@ -14,7 +16,8 @@ export type CreateFitnessServiceRequest = {
   description?: string;
   durationMinutes: number;
   price: number;
-  active?: boolean; // optional on create (backend default true)
+  active?: boolean;
+  locationId?: number;
 };
 
 export type UpdateFitnessServiceRequest = {
@@ -22,7 +25,8 @@ export type UpdateFitnessServiceRequest = {
   description?: string;
   durationMinutes: number;
   price: number;
-  active: boolean; // required on update
+  active: boolean;
+  locationId?: number;
 };
 
 export async function getFitnessServices(): Promise<FitnessServiceResponse[]> {
@@ -37,9 +41,16 @@ export async function getFitnessServiceById(
   return res.data;
 }
 
+export async function getActiveFitnessServices() {
+  const res = await http.get("/api/fitness-services/active");
+  return res.data;
+}
+
 export async function createFitnessService(
   payload: CreateFitnessServiceRequest
 ): Promise<FitnessServiceResponse> {
+  console.log("CREATE SERVICE payload:", payload);
+
   const res = await http.post("/api/fitness-services", payload);
   return res.data;
 }

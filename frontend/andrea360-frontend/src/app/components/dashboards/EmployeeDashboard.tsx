@@ -4,7 +4,7 @@ import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
 
 interface EmployeeDashboardProps {
-  locationId: string;
+  locationId?: number;
 }
 
 type AptStatus = "upcoming" | "full";

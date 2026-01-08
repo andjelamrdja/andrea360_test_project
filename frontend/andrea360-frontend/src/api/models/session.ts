@@ -6,11 +6,11 @@ export type SessionStatus = "SCHEDULED" | "CANCELLED";
 
 export type SessionResponse = {
   id: number;
-  startsAt: string; // OffsetDateTime -> ISO string
+  startsAt: string;
   endsAt: string;
 
   capacity: number;
-  status: string; // backend uses string, we'll treat as SessionStatus-ish
+  status: string;
 
   locationId: number;
   locationName: string;

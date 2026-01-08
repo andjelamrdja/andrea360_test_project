@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class FitnessServiceController {
     @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FitnessServiceResponse create(@Valid @RequestBody CreateFitnessServiceRequest request) {
-        return fitnessServiceService.create(request);
+    public FitnessServiceResponse create(@Valid @RequestBody CreateFitnessServiceRequest request, Authentication auth) {
+        return fitnessServiceService.create(request, auth.getName());
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
@@ -50,4 +51,10 @@ public class FitnessServiceController {
     public void delete(@PathVariable Long id) {
         fitnessServiceService.delete(id);
     }
+
+    @GetMapping("/active")
+    public List<FitnessServiceResponse> getActive() {
+        return fitnessServiceService.getActive();
+    }
+
 }

@@ -24,16 +24,33 @@ import { Label } from "../../ui/label";
 import { Badge } from "../../ui/badge";
 import { Switch } from "../../ui/switch";
 import { Textarea } from "../../ui/textarea";
+import {
+  getLocations,
+  type LocationResponse,
+} from "../../../../api/models/locations";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../ui/select";
+
+type Props = {
+  userRole: "admin" | "employee";
+  locationId?: number; // employee’s location from me.locationId
+};
 
 type FormState = {
   name: string;
-  price: string; // keep as string in form; convert on submit
+  price: string;
   durationMinutes: string;
   description: string;
   active: boolean;
+  locationId?: number;
 };
 
-export function FitnessServicesManagement() {
+export function FitnessServicesManagement({ userRole, locationId }: Props) {
   const [services, setServices] = useState<FitnessServiceResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +63,7 @@ export function FitnessServicesManagement() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const [showInactive, setShowInactive] = useState(true);
+  const [locations, setLocations] = useState<LocationResponse[]>([]);
 
   const [formData, setFormData] = useState<FormState>({
     name: "",
@@ -53,16 +71,18 @@ export function FitnessServicesManagement() {
     durationMinutes: "",
     description: "",
     active: true,
+    locationId: undefined,
   });
 
-  const dialogTitle = useMemo(
-    () => (editingService ? "Edit Service" : "Add New Service"),
-    [editingService]
-  );
+  const dialogTitle = editingService ? "Edit Service" : "Add New Service";
 
   async function load() {
     setIsLoading(true);
     setError(null);
+    if (userRole === "admin") {
+      const locs = await getLocations();
+      setLocations(locs);
+    }
 
     try {
       const data = await getFitnessServices();
@@ -85,16 +105,32 @@ export function FitnessServicesManagement() {
       durationMinutes: "",
       description: "",
       active: true,
+      locationId: undefined,
     });
   }
 
   function handleAddNew() {
+    if (userRole === "employee" && !locationId) {
+      setError("Your employee location is missing. Please re-login.");
+      return;
+    }
+
     setEditingService(null);
     resetForm();
     setIsDialogOpen(true);
   }
 
   function handleEdit(service: FitnessServiceResponse) {
+    if (
+      userRole === "employee" &&
+      locationId &&
+      (service as any).locationId != null &&
+      (service as any).locationId !== locationId
+    ) {
+      setError("You can only edit services from your location.");
+      return;
+    }
+
     setEditingService(service);
     setFormData({
       name: service.name,
@@ -102,6 +138,7 @@ export function FitnessServicesManagement() {
       durationMinutes: String(service.durationMinutes),
       description: service.description ?? "",
       active: service.active,
+      locationId: (service as any).locationId ?? undefined,
     });
     setIsDialogOpen(true);
   }
@@ -132,28 +169,51 @@ export function FitnessServicesManagement() {
       return;
     }
 
+    if (userRole === "employee" && !locationId) {
+      setIsSaving(false);
+      setError("Your employee location is missing. Please re-login.");
+      return;
+    }
+
+    const locationIdToSend: number | undefined =
+      userRole === "employee"
+        ? locationId ?? undefined
+        : formData.locationId ?? undefined;
+
+    if (userRole === "admin" && !locationIdToSend) {
+      setIsSaving(false);
+      setError("Location is required for admin.");
+      return;
+    }
+
     try {
       if (editingService) {
-        // Update requires active
         const updated = await updateFitnessService(editingService.id, {
           name,
           description: description || undefined,
           durationMinutes: durationNum,
           price: priceNum,
           active: formData.active,
+          locationId: userRole === "admin" ? formData.locationId : undefined,
         });
 
         setServices((prev) =>
           prev.map((s) => (s.id === updated.id ? updated : s))
         );
       } else {
-        // Create: active optional
+        if (userRole === "admin" && !formData.locationId) {
+          setIsSaving(false);
+          setError("Location is required.");
+          return;
+        }
+
         const created = await createFitnessService({
           name,
           description: description || undefined,
           durationMinutes: durationNum,
           price: priceNum,
           active: formData.active,
+          locationId: userRole === "admin" ? formData.locationId : locationId,
         });
 
         setServices((prev) => [created, ...prev]);
@@ -189,10 +249,18 @@ export function FitnessServicesManagement() {
     }
   }
 
+  const scopedServices = useMemo(() => {
+    if (userRole === "employee" && locationId) {
+      return services.filter((s: any) => s.locationId === locationId);
+    }
+    return services;
+  }, [services, userRole, locationId]);
+
   const filteredServices = useMemo(() => {
-    if (showInactive) return services;
-    return services.filter((s) => s.active);
-  }, [services, showInactive]);
+    const base = scopedServices;
+    if (showInactive) return base;
+    return base.filter((s) => s.active);
+  }, [scopedServices, showInactive]);
 
   return (
     <div className="p-8">
@@ -202,7 +270,9 @@ export function FitnessServicesManagement() {
             Services Management
           </h2>
           <p className="text-slate-500 mt-1">
-            Create, edit, activate/deactivate and manage your fitness services.
+            {userRole === "admin"
+              ? "Manage services across all locations."
+              : "Manage services for your location."}
           </p>
         </div>
 
@@ -306,6 +376,33 @@ export function FitnessServicesManagement() {
                       Inactive services can be hidden from booking flows.
                     </p>
                   </div>
+                  {userRole === "admin" && (
+                    <div>
+                      <Label className="p-1">Location</Label>
+                      <select
+                        className="w-full border rounded-md p-2"
+                        value={formData.locationId ?? ""}
+                        onChange={(e) =>
+                          setFormData((p) => ({
+                            ...p,
+                            locationId: e.target.value
+                              ? Number(e.target.value)
+                              : undefined,
+                          }))
+                        }
+                        required
+                      >
+                        <option value="" disabled>
+                          Select location
+                        </option>
+                        {locations.map((l) => (
+                          <option key={l.id} value={l.id}>
+                            {l.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                   <Switch
                     checked={formData.active}
                     onCheckedChange={(checked) =>
@@ -313,6 +410,13 @@ export function FitnessServicesManagement() {
                     }
                   />
                 </div>
+
+                {userRole === "employee" && (
+                  <div className="rounded-lg border border-slate-200 p-3 text-sm text-slate-600">
+                    This service will be created for your assigned location
+                    automatically.
+                  </div>
+                )}
 
                 <div className="flex gap-2 justify-end">
                   <Button
@@ -380,6 +484,17 @@ export function FitnessServicesManagement() {
                           {service.durationMinutes} min
                         </span>
                       </p>
+
+                      {/* Optional: show location for admin */}
+                      {(service as any).locationName &&
+                        userRole === "admin" && (
+                          <p className="text-xs text-slate-500 mt-1">
+                            Location:{" "}
+                            <span className="font-medium text-slate-700">
+                              {(service as any).locationName}
+                            </span>
+                          </p>
+                        )}
                     </div>
                   </div>
                 </div>

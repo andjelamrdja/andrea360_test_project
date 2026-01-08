@@ -22,7 +22,6 @@ function roleFromMe(
 ): AppRole | null {
   if (!userType) return null;
   if (userType === "MEMBER") return "member";
-  // EMPLOYEE:
   if (authRole === "ADMIN") return "admin";
   return "employee";
 }

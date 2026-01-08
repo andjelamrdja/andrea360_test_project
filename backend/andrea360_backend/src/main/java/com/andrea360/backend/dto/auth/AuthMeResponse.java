@@ -6,5 +6,9 @@ public record AuthMeResponse(
         String email,
         String userType,   // "EMPLOYEE" or "MEMBER"
         String authRole,   // "ADMIN"/"EMPLOYEE"/null
-        List<String> authorities
+        List<String> authorities,
+
+        Long employeeId,
+        Long memberId,
+        Long locationId
 ) {}

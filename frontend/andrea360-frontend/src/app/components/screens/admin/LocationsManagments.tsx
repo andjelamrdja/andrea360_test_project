@@ -92,7 +92,6 @@ export function LocationsManagement() {
       setEditingLocation(null);
       setFormData({ name: "", address: "" });
     } catch (e: any) {
-      // common: 409 unique constraint, 400 validation, 401/403 auth
       setError(
         e?.response?.data?.message ??
           "Save failed. Check inputs and permissions."
@@ -103,14 +102,12 @@ export function LocationsManagement() {
   }
 
   async function onDelete(id: number) {
-    // optional: confirm - minimal version
     const ok = window.confirm("Delete this location?");
     if (!ok) return;
 
     setDeletingId(id);
     setError(null);
 
-    // optimistic remove
     const snapshot = locations;
     setLocations((prev) => prev.filter((l) => l.id !== id));
 

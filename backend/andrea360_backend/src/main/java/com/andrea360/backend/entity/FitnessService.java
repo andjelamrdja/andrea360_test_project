@@ -35,4 +35,12 @@ public class FitnessService {
 
     @Column(nullable = false)
     private boolean active = true;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "location_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_fitness_service_location")
+    )
+    private Location location;
 }

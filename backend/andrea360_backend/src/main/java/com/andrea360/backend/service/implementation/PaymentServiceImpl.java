@@ -67,11 +67,24 @@ public class PaymentServiceImpl implements PaymentService {
         p.setCurrency(currency);
 
         p.setMethod(PaymentMethod.ONLINE);
-        p.setStatus(PaymentStatus.PENDING);
+
+// TEST MODE: instantly paid
+        p.setStatus(PaymentStatus.PAID);
         p.setCreatedAt(OffsetDateTime.now());
+        p.setPaidAt(OffsetDateTime.now());
+
+// optional but useful in test mode
+        p.setExternalRef("TEST-" + java.util.UUID.randomUUID());
 
         Payment saved = paymentRepository.save(p);
-        return map(saved);
+
+        applyCreditsIfNeeded(saved);
+
+
+        Payment full = paymentRepository.findByIdFull(saved.getId())
+                .orElseThrow(() -> new NotFoundException("Payment not found after save: " + saved.getId()));
+
+        return map(full);
     }
 
     @Override
@@ -165,14 +178,28 @@ public class PaymentServiceImpl implements PaymentService {
 
     private PaymentResponse map(Payment p) {
 
+        var member = p.getMember();
+        var service = p.getFitnessService();
+
+        // ✅ Use service location (it is required in your entity)
+        var loc = service != null ? service.getLocation() : null;
+
+        String memberName = member == null
+                ? null
+                : ((member.getFirstName() == null ? "" : member.getFirstName()) + " " +
+                (member.getLastName() == null ? "" : member.getLastName())).trim();
+
         return new PaymentResponse(
                 p.getId(),
-                p.getMember().getId(),
-                p.getMember().getFirstName(),
-                p.getMember().getLocation().getId(),
-                p.getMember().getLocation().getName(),
-                p.getFitnessService().getId(),
-                p.getFitnessService().getName(),
+                member != null ? member.getId() : null,
+                memberName,
+
+                loc != null ? loc.getId() : null,
+                loc != null ? loc.getName() : null,
+
+                service != null ? service.getId() : null,
+                service != null ? service.getName() : null,
+
                 p.getAmount(),
                 p.getCurrency(),
                 p.getMethod(),
@@ -187,7 +214,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private void applyCreditsIfNeeded(Payment p) {
-        if ("PAID".equalsIgnoreCase(p.getStatus().name()) && !p.isCreditsApplied()) {
+        if (p.getStatus() == PaymentStatus.PAID && !p.isCreditsApplied()) {
             int qty = (p.getQuantity() == null) ? 1 : p.getQuantity();
 
             memberCreditService.addCredits(

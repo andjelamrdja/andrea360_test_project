@@ -45,8 +45,9 @@ public class ReservationServiceImpl implements ReservationService {
         Session session = sessionRepository.findByIdForUpdate(request.getSessionId())
                 .orElseThrow(() -> new NotFoundException("Session not found: " + request.getSessionId()));
 
-        if (reservationRepository.existsByMemberIdAndSessionId(member.getId(), session.getId())) {
-            throw new BusinessException("Member already has a reservation for this session.");
+        if (reservationRepository.existsByMemberIdAndSessionIdAndStatusIn(
+                member.getId(), session.getId(), ACTIVE_STATUSES)) {
+            throw new BusinessException("Member already has an active reservation for this session.");
         }
 
         ensureCapacity(session.getId(), session.getCapacity());
@@ -108,8 +109,9 @@ public class ReservationServiceImpl implements ReservationService {
                         !existing.getSession().getId().equals(session.getId());
 
         if (changedMemberOrSession) {
-            if (reservationRepository.existsByMemberIdAndSessionId(member.getId(), session.getId())) {
-                throw new BusinessException("Member already has a reservation for this session.");
+            if (reservationRepository.existsByMemberIdAndSessionIdAndStatusIn(
+                    member.getId(), session.getId(), ACTIVE_STATUSES)) {
+                throw new BusinessException("Member already has an active reservation for this session.");
             }
             ensureCapacity(session.getId(), session.getCapacity());
         }
@@ -208,6 +210,16 @@ public class ReservationServiceImpl implements ReservationService {
         r = reservationRepository.save(r);
         return map(r);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReservationResponse> getMyReservations(Long memberId) {
+        if (memberId == null) throw new BusinessException("memberId is required.");
+        return reservationRepository.findAllByMemberIdWithDetails(memberId)
+                .stream().map(this::map)
+                .toList();
+    }
+
 
     @Override
     public void delete(Long id) {

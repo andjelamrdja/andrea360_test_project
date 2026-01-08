@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberCreditRepository extends JpaRepository<MemberCredit, Long> {
@@ -13,4 +14,12 @@ public interface MemberCreditRepository extends JpaRepository<MemberCredit, Long
 
     @Query("select coalesce(sum(mc.availableCredits), 0) from MemberCredit mc where mc.member.id = :memberId")
     Integer sumCreditsByMemberId(@Param("memberId") Long memberId);
+
+    @Query("""
+    select mc
+    from MemberCredit mc
+    join fetch mc.fitnessService fs
+    where mc.member.id = :memberId
+""")
+    List<MemberCredit> findAllByMemberIdWithService(Long memberId);
 }

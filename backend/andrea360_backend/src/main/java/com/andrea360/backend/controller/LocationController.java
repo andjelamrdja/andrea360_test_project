@@ -3,6 +3,7 @@ package com.andrea360.backend.controller;
 import com.andrea360.backend.dto.location.CreateLocationRequest;
 import com.andrea360.backend.dto.location.LocationResponse;
 import com.andrea360.backend.dto.location.UpdateLocationRequest;
+import com.andrea360.backend.service.EmployeeService;
 import com.andrea360.backend.service.LocationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class LocationController {
 
     private final LocationService locationService;
+    private final EmployeeService employeeService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

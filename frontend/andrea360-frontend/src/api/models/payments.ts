@@ -29,7 +29,7 @@ export type PaymentResponse = {
   method: PaymentMethod;
   status: PaymentStatus;
 
-  createdAt: string; // ISO
+  createdAt: string;
   paidAt?: string | null;
 
   externalRef?: string | null;
@@ -40,6 +40,14 @@ export type PaymentResponse = {
   checkoutUrl?: string | null;
 };
 
+export type CreatePaymentRequest = {
+  memberId: number;
+  fitnessServiceId: number;
+  quantity: number;
+  currency?: string;
+  amount?: number;
+};
+
 export async function getPayments(): Promise<PaymentResponse[]> {
   const res = await http.get("/api/payments");
   return res.data;
@@ -48,4 +56,9 @@ export async function getPayments(): Promise<PaymentResponse[]> {
 export async function updatePayment(id: number, payload: UpdatePaymentRequest) {
   const res = await http.put(`/api/payments/${id}`, payload);
   return res.data as PaymentResponse;
+}
+
+export async function createPayment(req: CreatePaymentRequest) {
+  const res = await http.post("/api/payments", req);
+  return res.data;
 }

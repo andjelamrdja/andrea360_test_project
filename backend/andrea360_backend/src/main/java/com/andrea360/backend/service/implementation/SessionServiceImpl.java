@@ -48,6 +48,18 @@ public class SessionServiceImpl implements SessionService {
             throw new BusinessException("Trainer already has a session in that time range.");
         }
 
+        if (!fitnessService.getLocation().getId().equals(location.getId())) {
+            throw new BusinessException("Service does not belong to selected location.");
+        }
+
+        if (!trainer.getLocation().getId().equals(location.getId())) {
+            throw new BusinessException("Trainer does not belong to selected location.");
+        }
+
+        if (!fitnessService.getLocation().getId().equals(trainer.getLocation().getId())) {
+            throw new BusinessException("You cannot create a session for a service outside your location.");
+        }
+
         Session s = new Session();
         s.setStartsAt(request.getStartsAt());
         s.setEndsAt(request.getEndsAt());

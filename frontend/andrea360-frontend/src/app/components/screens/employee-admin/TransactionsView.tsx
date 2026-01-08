@@ -27,12 +27,9 @@ import {
 
 type Props = {
   userRole: "admin" | "employee";
-  locationId?: number; // employee location (optional)
+  locationId?: number;
 };
 
-// ✅ Your backend PaymentResponse (from code you sent) does NOT include these,
-// but your UI wants them (memberName, locationName, etc).
-// We keep them as OPTIONAL so the component compiles even if backend doesn’t send them yet.
 type PaymentRow = PaymentResponse & {
   memberName?: string;
   locationId?: number;
@@ -76,7 +73,6 @@ export function TransactionsView({ userRole, locationId }: Props) {
     setError(null);
     try {
       const data = await getPayments();
-      // cast to PaymentRow (optional fields won’t hurt)
       setPayments(data as PaymentRow[]);
     } catch (e: any) {
       setError(e?.response?.data?.message ?? "Failed to load transactions.");
@@ -90,8 +86,6 @@ export function TransactionsView({ userRole, locationId }: Props) {
   }, []);
 
   const scoped = useMemo(() => {
-    // ⚠️ Only works if backend returns locationId on payment rows.
-    // If not, employees will see all payments (or you can later add an endpoint like /api/payments?locationId=...)
     if (userRole === "employee" && locationId) {
       return payments.filter((p) => p.locationId === locationId);
     }
@@ -133,9 +127,6 @@ export function TransactionsView({ userRole, locationId }: Props) {
     setError(null);
 
     try {
-      // ⚠️ This requires backend support!
-      // Your UpdatePaymentRequest currently does NOT have `status`.
-      // You must add it (or create a PATCH /api/payments/{id}/status endpoint).
       const updated = await updatePayment(paymentId, {
         status: newStatus,
       } as any);
@@ -300,7 +291,6 @@ export function TransactionsView({ userRole, locationId }: Props) {
                     </TableCell>
 
                     <TableCell className="font-medium">
-                      {/* backend has memberId; name is optional */}
                       {p.memberName ?? `Member #${p.memberId}`}
                     </TableCell>
 
@@ -332,9 +322,7 @@ export function TransactionsView({ userRole, locationId }: Props) {
                             <SelectTrigger
                               className="h-8"
                               disabled={isSaving}
-                              // click outside / blur to cancel
                               onBlur={() => {
-                                // small delay so select click works
                                 setTimeout(() => {
                                   setEditingStatusId((cur) =>
                                     cur === p.id ? null : cur

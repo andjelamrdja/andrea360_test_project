@@ -6,7 +6,7 @@ export type MemberResponse = {
   lastName: string;
   email: string;
   phone: string | null;
-  dateOfBirth: string; // LocalDate -> "YYYY-MM-DD"
+  dateOfBirth: string;
   locationId: number;
   locationName: string;
   totalCredits: number;
@@ -19,7 +19,7 @@ export type CreateMemberRequest = {
   phone?: string;
   dateOfBirth: string; // "YYYY-MM-DD"
   locationId: number;
-  password?: string; // backend allows it (not annotated NotNull)
+  password?: string;
 };
 
 export type UpdateMemberRequest = {

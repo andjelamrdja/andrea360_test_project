@@ -3,9 +3,11 @@ package com.andrea360.backend.service.implementation;
 import com.andrea360.backend.dto.fitness_service.CreateFitnessServiceRequest;
 import com.andrea360.backend.dto.fitness_service.FitnessServiceResponse;
 import com.andrea360.backend.dto.fitness_service.UpdateFitnessServiceRequest;
+import com.andrea360.backend.entity.Employee;
 import com.andrea360.backend.entity.FitnessService;
 import com.andrea360.backend.exception.BusinessException;
 import com.andrea360.backend.exception.NotFoundException;
+import com.andrea360.backend.repository.EmployeeRepository;
 import com.andrea360.backend.repository.FitnessServiceRepository;
 import com.andrea360.backend.service.FitnessServiceService;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,21 @@ import java.util.List;
 public class FitnessServiceServiceImpl implements FitnessServiceService {
 
     private final FitnessServiceRepository fitnessServiceRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Override
-    public FitnessServiceResponse create(CreateFitnessServiceRequest request) {
+    public FitnessServiceResponse create(CreateFitnessServiceRequest request,String employeeEmail) {
         if (fitnessServiceRepository.existsByNameIgnoreCase(request.getName())) {
             throw new BusinessException("Fitness service with same name already exists.");
         }
+
+        Employee e = employeeRepository.findByEmailIgnoreCase(employeeEmail)
+                .orElseThrow(() -> new NotFoundException("Employee not found for email: " + employeeEmail));
+
+        if (e.getLocation() == null) {
+            throw new BusinessException("Employee has no location assigned.");
+        }
+
 
         FitnessService service = new FitnessService();
         service.setName(request.getName());
@@ -33,7 +44,7 @@ public class FitnessServiceServiceImpl implements FitnessServiceService {
         service.setDurationMinutes(request.getDurationMinutes());
         service.setPrice(request.getPrice());
         service.setActive(request.getActive() == null ? true : request.getActive());
-
+        service.setLocation(e.getLocation());
         FitnessService saved = fitnessServiceRepository.save(service);
         return mapToResponse(saved);
     }
@@ -83,6 +94,15 @@ public class FitnessServiceServiceImpl implements FitnessServiceService {
         fitnessServiceRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<FitnessServiceResponse> getActive() {
+        return fitnessServiceRepository.findAllActiveWithLocation()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
     private FitnessServiceResponse mapToResponse(FitnessService service) {
         return new FitnessServiceResponse(
                 service.getId(),
@@ -90,7 +110,9 @@ public class FitnessServiceServiceImpl implements FitnessServiceService {
                 service.getDescription(),
                 service.getDurationMinutes(),
                 service.getPrice(),
-                service.isActive()
+                service.isActive(),
+                service.getLocation().getId(),
+                service.getLocation().getName()
         );
     }
 }

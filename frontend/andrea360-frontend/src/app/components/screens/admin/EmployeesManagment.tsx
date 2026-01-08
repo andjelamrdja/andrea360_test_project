@@ -45,10 +45,10 @@ type FormState = {
   lastName: string;
   email: string;
   phone: string;
-  authRole: EmployeeAuthRole; // create only (backend)
-  role: string; // job role (backend requires on update)
-  locationId: string; // keep as string for Select; convert to number on submit
-  password: string; // optional create only
+  authRole: EmployeeAuthRole;
+  role: string;
+  locationId: string;
+  password: string;
 };
 
 export function EmployeesManagement() {
@@ -125,7 +125,7 @@ export function EmployeesManagement() {
       lastName: employee.lastName,
       email: employee.email,
       phone: employee.phone ?? "",
-      authRole: "EMPLOYEE", // backend doesn't expose authRole in response, so we can’t prefill reliably
+      authRole: "EMPLOYEE",
       role: employee.role ?? "",
       locationId: String(employee.locationId),
       password: "",
@@ -147,7 +147,6 @@ export function EmployeesManagement() {
 
     try {
       if (editingEmployee) {
-        // Update DTO requires role + locationId
         const updated = await updateEmployee(editingEmployee.id, {
           firstName: formData.firstName.trim(),
           lastName: formData.lastName.trim(),
@@ -161,7 +160,6 @@ export function EmployeesManagement() {
           prev.map((e) => (e.id === updated.id ? updated : e))
         );
       } else {
-        // Create DTO: has authRole + optional password + locationId
         const created = await createEmployee({
           firstName: formData.firstName.trim(),
           lastName: formData.lastName.trim(),
@@ -308,7 +306,6 @@ export function EmployeesManagement() {
                 />
               </div>
 
-              {/* Job role - required by UpdateEmployeeRequest */}
               <div>
                 <Label className="p-1" htmlFor="jobRole">
                   Job Role
@@ -320,12 +317,11 @@ export function EmployeesManagement() {
                     setFormData((p) => ({ ...p, role: e.target.value }))
                   }
                   placeholder="e.g., CrossFit Trainer"
-                  required={!!editingEmployee} // required on edit (backend requires)
+                  required={!!editingEmployee}
                 />
                 {}
               </div>
 
-              {/* Auth role - exists only in Create DTO */}
               <div>
                 <Label className="p-1" htmlFor="authRole">
                   Authorization Role
@@ -335,7 +331,7 @@ export function EmployeesManagement() {
                   onValueChange={(value: EmployeeAuthRole) =>
                     setFormData((p) => ({ ...p, authRole: value }))
                   }
-                  disabled={!!editingEmployee} // backend update DTO doesn't support authRole
+                  disabled={!!editingEmployee}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select role" />
@@ -353,7 +349,6 @@ export function EmployeesManagement() {
                 )}
               </div>
 
-              {/* Password - create only */}
               {!editingEmployee && (
                 <div>
                   <Label className="p-1" htmlFor="password">
