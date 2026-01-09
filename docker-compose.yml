@@ -10,6 +10,38 @@ services:
       - "5433:5432"
     volumes:
       - andrea360_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U andrea360 -d andrea360"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend/andrea360_backend
+      dockerfile: Dockerfile
+    container_name: andrea360-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/andrea360
+      SPRING_DATASOURCE_USERNAME: andrea360
+      SPRING_DATASOURCE_PASSWORD: andrea360
+
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+    ports:
+      - "8082:8082"
+  frontend:
+    build:
+      context: ./frontend/andrea360-frontend
+      dockerfile: Dockerfile.dev
+    container_name: andrea360-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
 
 volumes:
   andrea360_pgdata:

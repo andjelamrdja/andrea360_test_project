@@ -22,7 +22,6 @@ public class EmployeePrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Spring convention: ROLE_ADMIN / ROLE_EMPLOYEE
         return List.of(new SimpleGrantedAuthority("ROLE_" + employee.getAuthRole().name()));
     }
 

@@ -58,3 +58,4 @@ tmp/
 temp/
 *.swp
 backend/andrea360_backend/src/main/resources/application-local.yml
+.env

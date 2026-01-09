@@ -25,7 +25,7 @@ public class StripeWebhookController {
     @PostMapping("/webhook")
     public ResponseEntity<String> webhook(
             @RequestBody String payload,
-            @RequestHeader("Stripe-Signature") String sigHeader // <-- MUST be in quotes
+            @RequestHeader("Stripe-Signature") String sigHeader
     ) {
         final Event event;
         try {
@@ -41,7 +41,7 @@ public class StripeWebhookController {
             StripeObject obj = deserializer.getObject().orElse(null);
 
             if (obj instanceof com.stripe.model.checkout.Session stripeSession) {
-                String stripeSessionId = stripeSession.getId(); // cs_test_...
+                String stripeSessionId = stripeSession.getId();
 
                 Payment payment = paymentRepository.findByExternalRef(stripeSessionId).orElse(null);
                 if (payment != null) {

@@ -99,7 +99,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private EmployeeResponse mapToResponse(Employee e) {
-        // location is LAZY, but we're inside transactional service; safe for mapping
         return new EmployeeResponse(
                 e.getId(),
                 e.getFirstName(),

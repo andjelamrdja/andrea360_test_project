@@ -33,10 +33,6 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     @Query("select s from Session s where s.id = :id")
     Optional<Session> findByIdForUpdate(@Param("id") Long id);
 
-    // ---------------------------
-    // Member booking queries (NO null binding)
-    // ---------------------------
-
     @Query("""
         select s
         from Session s

@@ -43,7 +43,6 @@ public class SessionServiceImpl implements SessionService {
         Employee trainer = employeeRepository.findById(request.getTrainerEmployeeId())
                 .orElseThrow(() -> new NotFoundException("Employee (trainer) not found: " + request.getTrainerEmployeeId()));
 
-        // overlap check (same trainer)
         if (sessionRepository.existsTrainerOverlap(trainer.getId(), request.getStartsAt(), request.getEndsAt(), null)) {
             throw new BusinessException("Trainer already has a session in that time range.");
         }

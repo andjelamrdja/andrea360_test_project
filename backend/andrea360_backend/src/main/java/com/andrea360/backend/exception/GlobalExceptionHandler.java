@@ -42,8 +42,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest req) {
 
         log.error("Unhandled exception on {} {}", req.getMethod(), req.getRequestURI(), ex);
-
-        // Optional: if you want to NOT wrap swagger errors while debugging, see note below.
         return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error", req.getRequestURI(), null);
     }
 

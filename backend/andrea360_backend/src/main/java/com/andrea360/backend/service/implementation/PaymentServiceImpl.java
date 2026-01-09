@@ -74,12 +74,10 @@ public class PaymentServiceImpl implements PaymentService {
 
         p.setMethod(PaymentMethod.ONLINE);
 
-// TEST MODE: instantly paid
         p.setStatus(PaymentStatus.PAID);
         p.setCreatedAt(OffsetDateTime.now());
         p.setPaidAt(OffsetDateTime.now());
 
-// optional but useful in test mode
         p.setExternalRef("TEST-" + java.util.UUID.randomUUID());
 
         Payment saved = paymentRepository.save(p);
@@ -98,7 +96,6 @@ public class PaymentServiceImpl implements PaymentService {
         Payment existing = paymentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Payment not found: " + id));
 
-        // allow admin to change status (controller restricts it)
         if (request.getStatus() != null && request.getStatus() != existing.getStatus()) {
             existing.setStatus(request.getStatus());
 
@@ -108,11 +105,8 @@ public class PaymentServiceImpl implements PaymentService {
                 }
                 applyCreditsIfNeeded(existing);
             }
-            // Optional: if setting away from PAID, you can null paidAt (depends on your audit needs)
-            // else if (existing.getStatus() != PaymentStatus.PAID) { existing.setPaidAt(null); }
         }
 
-        // keep your existing fields logic
         if (request.getExternalRef() != null && !request.getExternalRef().isBlank()) {
             String newRef = request.getExternalRef().trim();
             if (existing.getExternalRef() == null || !existing.getExternalRef().equals(newRef)) {
@@ -177,16 +171,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void markPaidFromStripe(Payment payment, Session session) {
 
-        // 🔒 Idempotency protection
         if (payment.getStatus() == PaymentStatus.PAID) {
             return;
         }
 
         payment.setStatus(PaymentStatus.PAID);
         payment.setPaidAt(OffsetDateTime.now());
-
-        // (optional) save Stripe references
-        // payment.setStripePaymentIntentId(session.getPaymentIntent());
 
         applyCreditsIfNeeded(payment);
 
@@ -206,7 +196,6 @@ public class PaymentServiceImpl implements PaymentService {
         var member = p.getMember();
         var service = p.getFitnessService();
 
-        // ✅ Use service location (it is required in your entity)
         var loc = service != null ? service.getLocation() : null;
 
         String memberName = member == null
@@ -250,7 +239,6 @@ public class PaymentServiceImpl implements PaymentService {
 
         String currency = (req.currency() == null || req.currency().isBlank()) ? "eur" : req.currency().toLowerCase();
 
-        // Save internal payment as PENDING (important!)
         Payment p = new Payment();
         p.setMember(member);
         p.setFitnessService(fitnessService);
@@ -265,7 +253,6 @@ public class PaymentServiceImpl implements PaymentService {
 
         Payment saved = paymentRepository.save(p);
 
-        // Stripe uses smallest currency unit (cents). Be careful with decimals.
         long unitAmountCents = fitnessService.getPrice().movePointRight(2).longValueExact();
 
         var params =
@@ -286,7 +273,6 @@ public class PaymentServiceImpl implements PaymentService {
                                                                         .build())
                                                         .build())
                                         .build())
-                        // metadata to reconnect Stripe -> your DB later
                         .putMetadata("paymentId", String.valueOf(saved.getId()))
                         .putMetadata("memberId", String.valueOf(memberId))
                         .putMetadata("fitnessServiceId", String.valueOf(fitnessService.getId()))
@@ -300,7 +286,6 @@ public class PaymentServiceImpl implements PaymentService {
             throw new BusinessException("Stripe session creation failed: " + e.getMessage());
         }
 
-        // store session id as externalRef so webhook can find it
         saved.setExternalRef(session.getId());
         paymentRepository.save(saved);
 
@@ -310,11 +295,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponse confirmStripeCheckout(String sessionId) {
 
-        // 1) find your Payment by externalRef = Stripe session id
         Payment payment = paymentRepository.findByExternalRef(sessionId)
                 .orElseThrow(() -> new NotFoundException("Payment not found for session: " + sessionId));
 
-        // 2) fetch session from Stripe (server-side, safe)
         Session session;
         try {
             session = Session.retrieve(sessionId);
@@ -322,14 +305,11 @@ public class PaymentServiceImpl implements PaymentService {
             throw new BusinessException("Cannot retrieve Stripe session: " + e.getMessage());
         }
 
-        // 3) verify it is paid
-        String status = session.getPaymentStatus(); // "paid", "unpaid", "no_payment_required"
+        String status = session.getPaymentStatus();
         if (!"paid".equals(status)) {
-            // keep it pending (or set FAILED/CANCELLED based on your rules)
             return map(payment);
         }
 
-        // 4) mark as paid + apply credits
         if (payment.getStatus() != PaymentStatus.PAID) {
             payment.setStatus(PaymentStatus.PAID);
             payment.setPaidAt(OffsetDateTime.now());

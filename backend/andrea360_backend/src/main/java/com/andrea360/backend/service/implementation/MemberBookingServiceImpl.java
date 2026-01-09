@@ -34,7 +34,6 @@ public class MemberBookingServiceImpl implements MemberBookingService {
     private final SessionRepository sessionRepository;
     private final MemberCreditService memberCreditService;
 
-    // You can tune these statuses later
     private static final List<String> ACTIVE_RESERVATION_STATUSES = List.of("CREATED", "CONFIRMED");
 
     @Override
@@ -59,7 +58,6 @@ public class MemberBookingServiceImpl implements MemberBookingService {
     @Override
     @Transactional(readOnly = true)
     public List<MemberSessionCardResponse> getAvailableSessions(Long memberId, Long fitnessServiceId, LocalDate date) {
-        // Define a query in SessionRepository (see below) and call it here
         List<Session> sessions;
         if (fitnessServiceId != null && date != null) {
             sessions = sessionRepository.findScheduledForMemberBookingByServiceAndDate(fitnessServiceId, date);
@@ -86,8 +84,6 @@ public class MemberBookingServiceImpl implements MemberBookingService {
         return sessions.stream().map(s -> {
             int currentBookings = bookingsBySession.getOrDefault(s.getId(), 0);
 
-            // If you have service price in FitnessService, map it here. Otherwise null.
-            // BigDecimal price = s.getFitnessService().getPrice();
             return new MemberSessionCardResponse(
                     s.getId(),
                     s.getStartsAt(),
@@ -124,16 +120,10 @@ public class MemberBookingServiceImpl implements MemberBookingService {
             throw new BusinessException("Session is full.");
         }
 
-        // consume 1 credit for that service (transactional)
         Long serviceId = session.getFitnessService().getId();
         memberCreditService.consumeCredit(memberId, serviceId);
 
-        // create reservation
         Reservation r = new Reservation();
-        // IMPORTANT: set member reference without extra query if you want:
-        // Member m = new Member(); m.setId(memberId); r.setMember(m);
-        // But safer if you already have Member loaded elsewhere; up to you.
-        // If you want no extra query, do the "id-only reference" technique.
         var mRef = new com.andrea360.backend.entity.Member();
         mRef.setId(memberId);
         r.setMember(mRef);
@@ -143,7 +133,6 @@ public class MemberBookingServiceImpl implements MemberBookingService {
         r.setCreatedAt(OffsetDateTime.now());
         Reservation saved = reservationRepository.save(r);
 
-        // remaining credits for service
         MemberCredit mc = memberCreditRepository
                 .findByMemberIdAndFitnessServiceId(memberId, serviceId)
                 .orElse(null);

@@ -103,7 +103,6 @@ public class ReservationServiceImpl implements ReservationService {
         Session session = sessionRepository.findById(request.getSessionId())
                 .orElseThrow(() -> new NotFoundException("Session not found: " + request.getSessionId()));
 
-        // if member/session changed -> enforce uniqueness
         boolean changedMemberOrSession =
                 !existing.getMember().getId().equals(member.getId()) ||
                         !existing.getSession().getId().equals(session.getId());
@@ -198,7 +197,6 @@ public class ReservationServiceImpl implements ReservationService {
         r.setStatus("CANCELLED");
         r.setCancelledAt(OffsetDateTime.now());
 
-        // Refund credit only if it was confirmed (active)
         if (wasConfirmed) {
             memberCreditService.addCredits(
                     r.getMember().getId(),
@@ -243,10 +241,8 @@ public class ReservationServiceImpl implements ReservationService {
         Long paymentId = (r.getPayment() != null) ? r.getPayment().getId() : null;
         String paymentStatus = (r.getPayment() != null) ? r.getPayment().getStatus().name() : null;
 
-        // Member full name is optional
         String fullName = null;
         try {
-            // If your Member has getFirstName/getLastName this will work; if not, keep null.
             String fn = (String) Member.class.getMethod("getFirstName").invoke(r.getMember());
             String ln = (String) Member.class.getMethod("getLastName").invoke(r.getMember());
             if (fn != null || ln != null) fullName = (fn == null ? "" : fn) + " " + (ln == null ? "" : ln);

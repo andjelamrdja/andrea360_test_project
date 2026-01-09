@@ -40,7 +40,6 @@ public class LocationServiceImpl implements LocationService {
         Location existing = locationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Location not found: " + id));
 
-        // optional but recommended (prevent duplicates when updating)
         boolean duplicate = locationRepository.existsByNameAndAddress(request.getName(), request.getAddress());
         if (duplicate && !(existing.getName().equals(request.getName()) && existing.getAddress().equals(request.getAddress()))) {
             throw new BusinessException("Location with same name and address already exists.");

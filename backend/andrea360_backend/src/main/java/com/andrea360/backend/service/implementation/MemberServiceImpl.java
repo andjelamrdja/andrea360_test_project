@@ -109,7 +109,6 @@ public class MemberServiceImpl implements MemberService {
         return mapToResponse(member);
     }
 
-
     private MemberResponse mapToResponse(Member m) {
         Integer totalCredits = memberCreditRepository.sumCreditsByMemberId(m.getId());
         return new MemberResponse(
