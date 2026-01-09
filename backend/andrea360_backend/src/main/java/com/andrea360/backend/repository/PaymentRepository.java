@@ -16,4 +16,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
         where p.id = :id
     """)
     Optional<Payment> findByIdFull(Long id);
+
+    Optional<Payment> findByExternalRef(String externalRef);
 }

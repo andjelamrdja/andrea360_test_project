@@ -37,6 +37,7 @@ function formatTime(iso: string) {
 }
 
 type UiStatus = "upcoming" | "completed" | "cancelled";
+type ViewStatus = "UPCOMING" | "COMPLETED" | "CANCELLED";
 
 function toUiStatus(resStatus: string): UiStatus {
   const s = (resStatus ?? "").toUpperCase();
@@ -49,6 +50,22 @@ function canCancel(startsAtIso: string) {
   const startsAt = new Date(startsAtIso).getTime();
   const now = Date.now();
   return (startsAt - now) / (1000 * 60 * 60) >= 2;
+}
+
+function computeUiStatus(
+  resStatus: string,
+  startsAtIso: string,
+  endsAtIso?: string | null
+): UiStatus {
+  const s = (resStatus ?? "").toUpperCase();
+  if (s === "CANCELLED") return "cancelled";
+
+  const now = Date.now();
+  const endMs = endsAtIso
+    ? new Date(endsAtIso).getTime()
+    : new Date(startsAtIso).getTime();
+
+  return endMs < now ? "completed" : "upcoming";
 }
 
 export function MyAppointments() {
@@ -120,6 +137,8 @@ export function MyAppointments() {
 
     return reservations.map((r) => {
       const s = bySessionId.get(r.sessionId);
+      const startsAt = r.sessionStartsAt;
+      const endsAt = s?.endsAt ?? null;
       return {
         reservationId: r.id,
         sessionId: r.sessionId,
@@ -128,7 +147,7 @@ export function MyAppointments() {
         fitnessServiceName: s?.fitnessServiceName ?? "Service",
         locationName: s?.locationName ?? "Location",
         status: r.status,
-        uiStatus: toUiStatus(r.status),
+        uiStatus: computeUiStatus(r.status, startsAt, endsAt),
       };
     });
   }, [reservations, sessions]);

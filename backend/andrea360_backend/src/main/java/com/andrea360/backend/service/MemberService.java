@@ -17,4 +17,5 @@ public interface MemberService {
     List<MemberResponse> getAll();
 
     void delete(Long id);
+    MemberResponse getByEmail(String email);
 }

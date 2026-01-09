@@ -17,6 +17,8 @@ import { TransactionsView } from "./app/components/screens/employee-admin/Transa
 import { MemberBooking } from "./app/components/screens/member/MemberBooking";
 import { PurchaseServices } from "./app/components/screens/member/PurchaseServices";
 import { MyAppointments } from "./app/components/screens/member/MyAppointments";
+import { MyProfile } from "./app/components/screens/member/MyProfile";
+import { PaymentSuccess } from "./app/components/screens/member/PaymentSuccess";
 
 function HomeRedirect() {
   const { me, isLoading } = useAuth();
@@ -31,6 +33,7 @@ function HomeRedirect() {
 
 export default function App() {
   const { me } = useAuth();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -124,10 +127,8 @@ export default function App() {
             path="/member/purchase"
             element={<PurchaseServices memberId={me?.memberId ?? 0} />}
           />
-          <Route
-            path="/member/profile"
-            element={<div className="p-8">My Profile</div>}
-          />
+          <Route path="/member/profile" element={<MyProfile />} />
+          <Route path="/payments/success" element={<PaymentSuccess />} />
         </Route>
 
         {/* fallback */}

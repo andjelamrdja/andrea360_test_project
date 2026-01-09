@@ -99,6 +99,16 @@ public class MemberServiceImpl implements MemberService {
         }
         memberRepository.deleteById(id);
     }
+    @Override
+    public MemberResponse getByEmail(String email) {
+        Member member = memberRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() ->
+                        new NotFoundException("Member not found for email: " + email)
+                );
+
+        return mapToResponse(member);
+    }
+
 
     private MemberResponse mapToResponse(Member m) {
         Integer totalCredits = memberCreditRepository.sumCreditsByMemberId(m.getId());

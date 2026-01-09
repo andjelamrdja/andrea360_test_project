@@ -2,8 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { CreditCard, Check } from "lucide-react";
 import { getActiveFitnessServices } from "../../../../api/models/fitness-services";
-import { getMyCredits } from "../../../../api/models/member-credits";
-import { createPayment } from "../../../../api/models/payments";
+import {
+  getMemberCredits,
+  type MemberCreditsResponse,
+} from "../../../../api/models/member-credits";
+import { createCheckoutSession } from "../../../../api/models/payments";
 import { Alert, AlertDescription } from "../../ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Badge } from "../../ui/badge";
@@ -29,14 +32,15 @@ export function PurchaseServices({ memberId }: { memberId: number }) {
   const [qtyByService, setQtyByService] = useState<Record<number, number>>({});
   const [busyServiceId, setBusyServiceId] = useState<number | null>(null);
 
-  const [credits, setCredits] = useState<any>(null);
+  // const [credits, setCredits] = useState<any>(null);
+  const [credits, setCredits] = useState<MemberCreditsResponse | null>(null);
 
   useEffect(() => {
     (async () => {
       try {
         const [svc, cr] = await Promise.all([
           getActiveFitnessServices(),
-          getMyCredits(memberId),
+          getMemberCredits(memberId),
         ]);
         setServices(svc);
         setCredits(cr);
@@ -59,20 +63,35 @@ export function PurchaseServices({ memberId }: { memberId: number }) {
     }));
   };
 
+  const creditsByServiceId = useMemo(() => {
+    const map = new Map<number, number>();
+    (credits?.creditsByService ?? []).forEach((c) =>
+      map.set(c.fitnessServiceId, c.availableCredits)
+    );
+    return map;
+  }, [credits]);
+
+  const totalCredits = credits?.totalCredits ?? 0;
+
   const handlePurchase = async (svc: FitnessServiceDto) => {
     const qty = qtyByService[svc.id] ?? 1;
 
     setBusyServiceId(svc.id);
     try {
-      await createPayment({
-        memberId,
+      const session = await createCheckoutSession({
         fitnessServiceId: svc.id,
         quantity: qty,
-        currency: "EUR",
+        currency: "eur",
       });
 
-      const cr = await getMyCredits(memberId);
-      setCredits(cr);
+      window.location.assign(session.url);
+    } catch (e: any) {
+      console.error("Checkout failed:", e?.response?.status, e?.response?.data);
+      alert(
+        typeof e?.response?.data === "string"
+          ? e.response.data
+          : JSON.stringify(e?.response?.data ?? e.message)
+      );
     } finally {
       setBusyServiceId(null);
     }
@@ -102,12 +121,28 @@ export function PurchaseServices({ memberId }: { memberId: number }) {
           <CardHeader>
             <CardTitle>Your credits</CardTitle>
           </CardHeader>
-          <CardContent className="text-slate-700">
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary">Total</Badge>
-              <span className="font-semibold">
-                {credits.total ?? credits.totalCredits ?? "—"}
+          <CardContent className="space-y-4">
+            <div className="p-4 bg-slate-50 rounded-lg flex items-center justify-between">
+              <span className="font-medium text-slate-900">Total Credits:</span>
+              <span className="text-2xl font-bold text-blue-600">
+                {totalCredits}
               </span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {(credits.creditsByService ?? []).map((c) => (
+                <div
+                  key={c.fitnessServiceId}
+                  className="p-4 bg-blue-50 rounded-lg"
+                >
+                  <p className="text-sm text-slate-600 mb-1">
+                    {c.fitnessServiceName}
+                  </p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    {c.availableCredits}
+                  </p>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -117,6 +152,7 @@ export function PurchaseServices({ memberId }: { memberId: number }) {
         {sortedServices.map((svc) => {
           const qty = qtyByService[svc.id] ?? 1;
           const total = Number(svc.price) * qty;
+          const owned = creditsByServiceId.get(svc.id) ?? 0;
 
           return (
             <Card key={svc.id} className="hover:shadow-lg transition-shadow">
@@ -134,7 +170,13 @@ export function PurchaseServices({ memberId }: { memberId: number }) {
                       </div>
                     )}
                   </div>
-                  <Badge className="bg-slate-900 text-white">Active</Badge>
+
+                  <div className="mt-2">
+                    <Badge variant={owned > 0 ? "secondary" : "outline"}>
+                      You have {owned} credit{owned === 1 ? "" : "s"}
+                    </Badge>
+                    <Badge className="bg-slate-900 text-white">Active</Badge>
+                  </div>
                 </CardTitle>
               </CardHeader>
 

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,4 +52,11 @@ public class MemberController {
     public void delete(@PathVariable Long id) {
         memberService.delete(id);
     }
+
+    @PreAuthorize("hasRole('MEMBER')")
+    @GetMapping("/me")
+    public MemberResponse me(Authentication auth) {
+        return memberService.getByEmail(auth.getName());
+    }
+
 }

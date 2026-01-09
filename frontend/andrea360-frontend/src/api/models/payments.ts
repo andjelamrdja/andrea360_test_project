@@ -48,6 +48,18 @@ export type CreatePaymentRequest = {
   amount?: number;
 };
 
+export type CreateCheckoutSessionRequest = {
+  fitnessServiceId: number;
+  quantity: number;
+  currency?: string;
+};
+
+export type CreateCheckoutSessionResponse = {
+  url: string;
+  sessionId: string;
+  paymentId: number;
+};
+
 export async function getPayments(): Promise<PaymentResponse[]> {
   const res = await http.get("/api/payments");
   return res.data;
@@ -61,4 +73,14 @@ export async function updatePayment(id: number, payload: UpdatePaymentRequest) {
 export async function createPayment(req: CreatePaymentRequest) {
   const res = await http.post("/api/payments", req);
   return res.data;
+}
+
+export async function createCheckoutSession(
+  req: CreateCheckoutSessionRequest
+): Promise<CreateCheckoutSessionResponse> {
+  const { data } = await http.post<CreateCheckoutSessionResponse>(
+    "/api/payments/stripe/checkout-session",
+    req
+  );
+  return data;
 }

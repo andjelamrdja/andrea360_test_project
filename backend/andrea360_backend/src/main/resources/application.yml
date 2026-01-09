@@ -22,3 +22,10 @@ spring:
 logging:
   level:
     org.hibernate.SQL: warn
+
+stripe:
+  secretKey: ${STRIPE_SECRET_KEY:}
+  webhookSecret: ${STRIPE_WEBHOOK_SECRET}
+  successUrl: http://localhost:5173/payments/success?session_id={CHECKOUT_SESSION_ID}
+  cancelUrl: http://localhost:5173/payments/cancel
+

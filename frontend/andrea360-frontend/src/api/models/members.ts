@@ -54,3 +54,13 @@ export async function updateMember(
 export async function deleteMember(id: number): Promise<void> {
   await http.delete(`/api/members/${id}`);
 }
+
+export async function getMemberMe(): Promise<MemberResponse> {
+  const { data } = await http.get("/api/members/me");
+  return data;
+}
+
+export async function getMemberById(id: number): Promise<MemberResponse> {
+  const { data } = await http.get(`/api/members/${id}`);
+  return data;
+}

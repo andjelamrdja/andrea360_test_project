@@ -1,8 +1,11 @@
 package com.andrea360.backend.service.implementation;
 
+import com.andrea360.backend.config.StripeConfig;
 import com.andrea360.backend.dto.payment.CreatePaymentRequest;
 import com.andrea360.backend.dto.payment.PaymentResponse;
 import com.andrea360.backend.dto.payment.UpdatePaymentRequest;
+import com.andrea360.backend.dto.stripe.CreateCheckoutSessionRequest;
+import com.andrea360.backend.dto.stripe.CreateCheckoutSessionResponse;
 import com.andrea360.backend.entity.FitnessService;
 import com.andrea360.backend.entity.Member;
 import com.andrea360.backend.entity.Payment;
@@ -15,6 +18,7 @@ import com.andrea360.backend.repository.MemberRepository;
 import com.andrea360.backend.repository.PaymentRepository;
 import com.andrea360.backend.service.MemberCreditService;
 import com.andrea360.backend.service.PaymentService;
+import com.stripe.model.checkout.Session;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +36,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final MemberRepository memberRepository;
     private final FitnessServiceRepository fitnessServiceRepository;
     private final MemberCreditService memberCreditService;
+    private final StripeConfig stripeConfig;
+
 
     @Override
     public PaymentResponse create(CreatePaymentRequest request) {
@@ -169,6 +175,25 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public void markPaidFromStripe(Payment payment, Session session) {
+
+        // 🔒 Idempotency protection
+        if (payment.getStatus() == PaymentStatus.PAID) {
+            return;
+        }
+
+        payment.setStatus(PaymentStatus.PAID);
+        payment.setPaidAt(OffsetDateTime.now());
+
+        // (optional) save Stripe references
+        // payment.setStripePaymentIntentId(session.getPaymentIntent());
+
+        applyCreditsIfNeeded(payment);
+
+        paymentRepository.save(payment);
+    }
+
+    @Override
     public void delete(Long id) {
         if (!paymentRepository.existsById(id)) {
             throw new NotFoundException("Payment not found: " + id);
@@ -211,6 +236,109 @@ public class PaymentServiceImpl implements PaymentService {
                 p.isCreditsApplied(),
                 null
         );
+    }
+    @Override
+    public CreateCheckoutSessionResponse createStripeCheckoutSession(CreateCheckoutSessionRequest req, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("Member not found: " + memberId));
+
+        FitnessService fitnessService = fitnessServiceRepository.findById(req.fitnessServiceId())
+                .orElseThrow(() -> new NotFoundException("FitnessService not found: " + req.fitnessServiceId()));
+
+        int qty = (req.quantity() == null) ? 1 : req.quantity();
+        if (qty < 1) throw new BusinessException("Quantity must be at least 1.");
+
+        String currency = (req.currency() == null || req.currency().isBlank()) ? "eur" : req.currency().toLowerCase();
+
+        // Save internal payment as PENDING (important!)
+        Payment p = new Payment();
+        p.setMember(member);
+        p.setFitnessService(fitnessService);
+        p.setQuantity(qty);
+        p.setCurrency(currency.toUpperCase());
+        p.setMethod(PaymentMethod.ONLINE);
+        p.setStatus(PaymentStatus.PENDING);
+        p.setCreatedAt(OffsetDateTime.now());
+
+        BigDecimal amount = fitnessService.getPrice().multiply(BigDecimal.valueOf(qty));
+        p.setAmount(amount);
+
+        Payment saved = paymentRepository.save(p);
+
+        // Stripe uses smallest currency unit (cents). Be careful with decimals.
+        long unitAmountCents = fitnessService.getPrice().movePointRight(2).longValueExact();
+
+        var params =
+                com.stripe.param.checkout.SessionCreateParams.builder()
+                        .setMode(com.stripe.param.checkout.SessionCreateParams.Mode.PAYMENT)
+                        .setSuccessUrl(stripeConfig.getSuccessUrl())
+                        .setCancelUrl(stripeConfig.getCancelUrl())
+                        .addLineItem(
+                                com.stripe.param.checkout.SessionCreateParams.LineItem.builder()
+                                        .setQuantity((long) qty)
+                                        .setPriceData(
+                                                com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData.builder()
+                                                        .setCurrency(currency)
+                                                        .setUnitAmount(unitAmountCents)
+                                                        .setProductData(
+                                                                com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                                        .setName(fitnessService.getName() + " credit")
+                                                                        .build())
+                                                        .build())
+                                        .build())
+                        // metadata to reconnect Stripe -> your DB later
+                        .putMetadata("paymentId", String.valueOf(saved.getId()))
+                        .putMetadata("memberId", String.valueOf(memberId))
+                        .putMetadata("fitnessServiceId", String.valueOf(fitnessService.getId()))
+                        .putMetadata("quantity", String.valueOf(qty))
+                        .build();
+
+        com.stripe.model.checkout.Session session;
+        try {
+            session = com.stripe.model.checkout.Session.create(params);
+        } catch (Exception e) {
+            throw new BusinessException("Stripe session creation failed: " + e.getMessage());
+        }
+
+        // store session id as externalRef so webhook can find it
+        saved.setExternalRef(session.getId());
+        paymentRepository.save(saved);
+
+        return new CreateCheckoutSessionResponse(session.getUrl(), session.getId(), saved.getId());
+    }
+
+    @Override
+    public PaymentResponse confirmStripeCheckout(String sessionId) {
+
+        // 1) find your Payment by externalRef = Stripe session id
+        Payment payment = paymentRepository.findByExternalRef(sessionId)
+                .orElseThrow(() -> new NotFoundException("Payment not found for session: " + sessionId));
+
+        // 2) fetch session from Stripe (server-side, safe)
+        Session session;
+        try {
+            session = Session.retrieve(sessionId);
+        } catch (Exception e) {
+            throw new BusinessException("Cannot retrieve Stripe session: " + e.getMessage());
+        }
+
+        // 3) verify it is paid
+        String status = session.getPaymentStatus(); // "paid", "unpaid", "no_payment_required"
+        if (!"paid".equals(status)) {
+            // keep it pending (or set FAILED/CANCELLED based on your rules)
+            return map(payment);
+        }
+
+        // 4) mark as paid + apply credits
+        if (payment.getStatus() != PaymentStatus.PAID) {
+            payment.setStatus(PaymentStatus.PAID);
+            payment.setPaidAt(OffsetDateTime.now());
+            applyCreditsIfNeeded(payment);
+            paymentRepository.save(payment);
+        }
+
+        Payment full = paymentRepository.findByIdFull(payment.getId()).orElse(payment);
+        return map(full);
     }
 
     private void applyCreditsIfNeeded(Payment p) {
