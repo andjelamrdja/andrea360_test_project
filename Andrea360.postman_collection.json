@@ -1,0 +1,3727 @@
+{
+	"info": {
+		"_postman_id": "6a6748ab-a9b7-4119-9fb9-1a085ba6ff53",
+		"name": "Andrea360",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40927402"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "sessions",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "get By Id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/sessions/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"sessions",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/sessions/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"sessions",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 1645,\n  \"startsAt\": \"2008-11-18T18:19:36.162Z\",\n  \"endsAt\": \"2024-11-01T01:18:20.653Z\",\n  \"capacity\": 1783,\n  \"status\": \"string\",\n  \"locationId\": 5288,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 1637,\n  \"fitnessServiceName\": \"string\",\n  \"trainerEmployeeId\": 9352,\n  \"trainerName\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"capacity\": 3661,\n  \"endsAt\": \"2014-03-08T01:33:56.310Z\",\n  \"fitnessServiceId\": 433,\n  \"locationId\": 2364,\n  \"startsAt\": \"1966-03-15T19:59:38.158Z\",\n  \"status\": \"string\",\n  \"trainerEmployeeId\": 3066\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/sessions/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"sessions",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"capacity\": 3661,\n  \"endsAt\": \"2014-03-08T01:33:56.310Z\",\n  \"fitnessServiceId\": 433,\n  \"locationId\": 2364,\n  \"startsAt\": \"1966-03-15T19:59:38.158Z\",\n  \"status\": \"string\",\n  \"trainerEmployeeId\": 3066\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/sessions/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"sessions",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 1645,\n  \"startsAt\": \"2008-11-18T18:19:36.162Z\",\n  \"endsAt\": \"2024-11-01T01:18:20.653Z\",\n  \"capacity\": 1783,\n  \"status\": \"string\",\n  \"locationId\": 5288,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 1637,\n  \"fitnessServiceName\": \"string\",\n  \"trainerEmployeeId\": 9352,\n  \"trainerName\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/sessions/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"sessions",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "No Content",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/sessions/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"sessions",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/sessions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"sessions"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/sessions",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"sessions"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 4464,\n    \"startsAt\": \"1961-09-24T22:55:17.990Z\",\n    \"endsAt\": \"2001-11-06T14:26:37.636Z\",\n    \"capacity\": 8028,\n    \"status\": \"string\",\n    \"locationId\": 8426,\n    \"locationName\": \"string\",\n    \"fitnessServiceId\": 2612,\n    \"fitnessServiceName\": \"string\",\n    \"trainerEmployeeId\": 7514,\n    \"trainerName\": \"string\"\n  },\n  {\n    \"id\": 5993,\n    \"startsAt\": \"1983-06-30T20:29:51.250Z\",\n    \"endsAt\": \"2020-06-19T11:55:58.533Z\",\n    \"capacity\": 3615,\n    \"status\": \"string\",\n    \"locationId\": 9839,\n    \"locationName\": \"string\",\n    \"fitnessServiceId\": 3724,\n    \"fitnessServiceName\": \"string\",\n    \"trainerEmployeeId\": 9480,\n    \"trainerName\": \"string\"\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"capacity\": 7969,\n  \"endsAt\": \"1988-11-06T21:41:19.027Z\",\n  \"fitnessServiceId\": 2008,\n  \"locationId\": 5913,\n  \"startsAt\": \"1972-04-03T01:04:25.153Z\",\n  \"trainerEmployeeId\": 4959\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/sessions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"sessions"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"capacity\": 7969,\n  \"endsAt\": \"1988-11-06T21:41:19.027Z\",\n  \"fitnessServiceId\": 2008,\n  \"locationId\": 5913,\n  \"startsAt\": \"1972-04-03T01:04:25.153Z\",\n  \"trainerEmployeeId\": 4959\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/sessions",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"sessions"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 1645,\n  \"startsAt\": \"2008-11-18T18:19:36.162Z\",\n  \"endsAt\": \"2024-11-01T01:18:20.653Z\",\n  \"capacity\": 1783,\n  \"status\": \"string\",\n  \"locationId\": 5288,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 1637,\n  \"fitnessServiceName\": \"string\",\n  \"trainerEmployeeId\": 9352,\n  \"trainerName\": \"string\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "reservations",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "cancel",
+									"item": [
+										{
+											"name": "cancel",
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/reservations/:id/cancel",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"reservations",
+														":id",
+														"cancel"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "*/*"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/reservations/:id/cancel",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"reservations",
+																":id",
+																"cancel"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "6287"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "*/*"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 9456,\n  \"memberId\": 8196,\n  \"memberFullName\": \"string\",\n  \"sessionId\": 6961,\n  \"sessionStartsAt\": \"1964-06-09T22:21:45.256Z\",\n  \"paymentId\": 283,\n  \"paymentStatus\": \"string\",\n  \"status\": \"string\",\n  \"createdAt\": \"1946-12-26T02:44:30.872Z\",\n  \"cancelledAt\": \"1985-04-25T12:55:10.324Z\",\n  \"note\": \"string\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "get By Id 1",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/reservations/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"reservations",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/reservations/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"reservations",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 9456,\n  \"memberId\": 8196,\n  \"memberFullName\": \"string\",\n  \"sessionId\": 6961,\n  \"sessionStartsAt\": \"1964-06-09T22:21:45.256Z\",\n  \"paymentId\": 283,\n  \"paymentStatus\": \"string\",\n  \"status\": \"string\",\n  \"createdAt\": \"1946-12-26T02:44:30.872Z\",\n  \"cancelledAt\": \"1985-04-25T12:55:10.324Z\",\n  \"note\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update 1",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"memberId\": 2776,\n  \"sessionId\": 1547,\n  \"paymentId\": 8054,\n  \"note\": \"string\",\n  \"status\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/reservations/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"reservations",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"memberId\": 2776,\n  \"sessionId\": 1547,\n  \"paymentId\": 8054,\n  \"note\": \"string\",\n  \"status\": \"string\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/reservations/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"reservations",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 9456,\n  \"memberId\": 8196,\n  \"memberFullName\": \"string\",\n  \"sessionId\": 6961,\n  \"sessionStartsAt\": \"1964-06-09T22:21:45.256Z\",\n  \"paymentId\": 283,\n  \"paymentStatus\": \"string\",\n  \"status\": \"string\",\n  \"createdAt\": \"1946-12-26T02:44:30.872Z\",\n  \"cancelledAt\": \"1985-04-25T12:55:10.324Z\",\n  \"note\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete 1",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/reservations/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"reservations",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "No Content",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/reservations/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"reservations",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "my",
+							"item": [
+								{
+									"name": "my",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/reservations/my?memberId=6287",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"reservations",
+												"my"
+											],
+											"query": [
+												{
+													"key": "memberId",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/reservations/my?memberId=6287",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"reservations",
+														"my"
+													],
+													"query": [
+														{
+															"key": "memberId",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"id\": 8968,\n    \"memberId\": 9963,\n    \"memberFullName\": \"string\",\n    \"sessionId\": 73,\n    \"sessionStartsAt\": \"1986-05-18T03:30:06.954Z\",\n    \"paymentId\": 4728,\n    \"paymentStatus\": \"string\",\n    \"status\": \"string\",\n    \"createdAt\": \"2025-10-31T04:31:55.960Z\",\n    \"cancelledAt\": \"1964-07-05T09:23:01.049Z\",\n    \"note\": \"string\"\n  },\n  {\n    \"id\": 440,\n    \"memberId\": 5346,\n    \"memberFullName\": \"string\",\n    \"sessionId\": 313,\n    \"sessionStartsAt\": \"1997-03-30T08:23:52.528Z\",\n    \"paymentId\": 1116,\n    \"paymentStatus\": \"string\",\n    \"status\": \"string\",\n    \"createdAt\": \"1954-08-29T04:08:52.834Z\",\n    \"cancelledAt\": \"1979-10-26T09:17:37.027Z\",\n    \"note\": \"string\"\n  }\n]"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get All 1",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/reservations",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reservations"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/reservations",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"reservations"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 8968,\n    \"memberId\": 9963,\n    \"memberFullName\": \"string\",\n    \"sessionId\": 73,\n    \"sessionStartsAt\": \"1986-05-18T03:30:06.954Z\",\n    \"paymentId\": 4728,\n    \"paymentStatus\": \"string\",\n    \"status\": \"string\",\n    \"createdAt\": \"2025-10-31T04:31:55.960Z\",\n    \"cancelledAt\": \"1964-07-05T09:23:01.049Z\",\n    \"note\": \"string\"\n  },\n  {\n    \"id\": 440,\n    \"memberId\": 5346,\n    \"memberFullName\": \"string\",\n    \"sessionId\": 313,\n    \"sessionStartsAt\": \"1997-03-30T08:23:52.528Z\",\n    \"paymentId\": 1116,\n    \"paymentStatus\": \"string\",\n    \"status\": \"string\",\n    \"createdAt\": \"1954-08-29T04:08:52.834Z\",\n    \"cancelledAt\": \"1979-10-26T09:17:37.027Z\",\n    \"note\": \"string\"\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "create 1",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"memberId\": 9132,\n  \"sessionId\": 6443,\n  \"paymentId\": 1335,\n  \"note\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/reservations",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"reservations"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"memberId\": 9132,\n  \"sessionId\": 6443,\n  \"paymentId\": 1335,\n  \"note\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/reservations",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"reservations"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 9456,\n  \"memberId\": 8196,\n  \"memberFullName\": \"string\",\n  \"sessionId\": 6961,\n  \"sessionStartsAt\": \"1964-06-09T22:21:45.256Z\",\n  \"paymentId\": 283,\n  \"paymentStatus\": \"string\",\n  \"status\": \"string\",\n  \"createdAt\": \"1946-12-26T02:44:30.872Z\",\n  \"cancelledAt\": \"1985-04-25T12:55:10.324Z\",\n  \"note\": \"string\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "payments",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "mark-paid",
+									"item": [
+										{
+											"name": "mark Paid",
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/payments/:id/mark-paid",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"payments",
+														":id",
+														"mark-paid"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "*/*"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/payments/:id/mark-paid",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"payments",
+																":id",
+																"mark-paid"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "6287"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "*/*"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 9934,\n  \"memberId\": 3926,\n  \"memberName\": \"string\",\n  \"locationId\": 6158,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 2322,\n  \"fitnessServiceName\": \"string\",\n  \"amount\": 6518.048126293561,\n  \"currency\": \"string\",\n  \"method\": \"CARD\",\n  \"status\": \"PAID\",\n  \"createdAt\": \"1968-08-18T12:47:32.277Z\",\n  \"paidAt\": \"1947-06-04T04:25:09.842Z\",\n  \"externalRef\": \"string\",\n  \"quantity\": 5127,\n  \"creditsApplied\": true,\n  \"checkoutUrl\": \"string\"\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "get By Id 2",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/payments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"payments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/payments/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"payments",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 9934,\n  \"memberId\": 3926,\n  \"memberName\": \"string\",\n  \"locationId\": 6158,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 2322,\n  \"fitnessServiceName\": \"string\",\n  \"amount\": 6518.048126293561,\n  \"currency\": \"string\",\n  \"method\": \"CARD\",\n  \"status\": \"PAID\",\n  \"createdAt\": \"1968-08-18T12:47:32.277Z\",\n  \"paidAt\": \"1947-06-04T04:25:09.842Z\",\n  \"externalRef\": \"string\",\n  \"quantity\": 5127,\n  \"creditsApplied\": true,\n  \"checkoutUrl\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update 2",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"externalRef\": \"string\",\n  \"quantity\": 6292,\n  \"amount\": 2224.1103963940036,\n  \"currency\": \"\",\n  \"status\": \"FAILED\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/payments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"payments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"externalRef\": \"string\",\n  \"quantity\": 6292,\n  \"amount\": 2224.1103963940036,\n  \"currency\": \"\",\n  \"status\": \"FAILED\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/payments/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"payments",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 9934,\n  \"memberId\": 3926,\n  \"memberName\": \"string\",\n  \"locationId\": 6158,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 2322,\n  \"fitnessServiceName\": \"string\",\n  \"amount\": 6518.048126293561,\n  \"currency\": \"string\",\n  \"method\": \"CARD\",\n  \"status\": \"PAID\",\n  \"createdAt\": \"1968-08-18T12:47:32.277Z\",\n  \"paidAt\": \"1947-06-04T04:25:09.842Z\",\n  \"externalRef\": \"string\",\n  \"quantity\": 5127,\n  \"creditsApplied\": true,\n  \"checkoutUrl\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete 2",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/payments/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"payments",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "No Content",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/payments/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"payments",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "stripe",
+							"item": [
+								{
+									"name": "checkout-session",
+									"item": [
+										{
+											"name": "create Checkout Session",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"fitnessServiceId\": 6329,\n  \"quantity\": 807,\n  \"currency\": \"string\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/payments/stripe/checkout-session",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"payments",
+														"stripe",
+														"checkout-session"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "*/*"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"fitnessServiceId\": 6329,\n  \"quantity\": 807,\n  \"currency\": \"string\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/payments/stripe/checkout-session",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"payments",
+																"stripe",
+																"checkout-session"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "*/*"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"url\": \"string\",\n  \"sessionId\": \"string\",\n  \"paymentId\": 2229\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "confirm",
+									"item": [
+										{
+											"name": "confirm Stripe",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/payments/stripe/confirm?sessionId=string",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"payments",
+														"stripe",
+														"confirm"
+													],
+													"query": [
+														{
+															"key": "sessionId",
+															"value": "string"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "*/*"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/payments/stripe/confirm?sessionId=string",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"payments",
+																"stripe",
+																"confirm"
+															],
+															"query": [
+																{
+																	"key": "sessionId",
+																	"value": "string"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "*/*"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": 9934,\n  \"memberId\": 3926,\n  \"memberName\": \"string\",\n  \"locationId\": 6158,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 2322,\n  \"fitnessServiceName\": \"string\",\n  \"amount\": 6518.048126293561,\n  \"currency\": \"string\",\n  \"method\": \"CARD\",\n  \"status\": \"PAID\",\n  \"createdAt\": \"1968-08-18T12:47:32.277Z\",\n  \"paidAt\": \"1947-06-04T04:25:09.842Z\",\n  \"externalRef\": \"string\",\n  \"quantity\": 5127,\n  \"creditsApplied\": true,\n  \"checkoutUrl\": \"string\"\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get All 2",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/payments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"payments"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/payments",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"payments"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 7467,\n    \"memberId\": 4409,\n    \"memberName\": \"string\",\n    \"locationId\": 362,\n    \"locationName\": \"string\",\n    \"fitnessServiceId\": 8114,\n    \"fitnessServiceName\": \"string\",\n    \"amount\": 1755.4800834026341,\n    \"currency\": \"string\",\n    \"method\": \"CASH\",\n    \"status\": \"PAID\",\n    \"createdAt\": \"1984-10-24T10:55:20.022Z\",\n    \"paidAt\": \"1987-07-14T14:21:36.229Z\",\n    \"externalRef\": \"string\",\n    \"quantity\": 9594,\n    \"creditsApplied\": false,\n    \"checkoutUrl\": \"string\"\n  },\n  {\n    \"id\": 5260,\n    \"memberId\": 3189,\n    \"memberName\": \"string\",\n    \"locationId\": 4395,\n    \"locationName\": \"string\",\n    \"fitnessServiceId\": 1045,\n    \"fitnessServiceName\": \"string\",\n    \"amount\": 4452.448345059554,\n    \"currency\": \"string\",\n    \"method\": \"CARD\",\n    \"status\": \"PAID\",\n    \"createdAt\": \"1999-05-03T09:59:47.035Z\",\n    \"paidAt\": \"1953-01-25T01:47:49.510Z\",\n    \"externalRef\": \"string\",\n    \"quantity\": 4737,\n    \"creditsApplied\": false,\n    \"checkoutUrl\": \"string\"\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "create 2",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fitnessServiceId\": 2957,\n  \"memberId\": 4950,\n  \"quantity\": 4439,\n  \"currency\": \"stri\",\n  \"amount\": 9683.780393693123\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/payments",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"payments"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"fitnessServiceId\": 2957,\n  \"memberId\": 4950,\n  \"quantity\": 4439,\n  \"currency\": \"stri\",\n  \"amount\": 9683.780393693123\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/payments",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"payments"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 9934,\n  \"memberId\": 3926,\n  \"memberName\": \"string\",\n  \"locationId\": 6158,\n  \"locationName\": \"string\",\n  \"fitnessServiceId\": 2322,\n  \"fitnessServiceName\": \"string\",\n  \"amount\": 6518.048126293561,\n  \"currency\": \"string\",\n  \"method\": \"CARD\",\n  \"status\": \"PAID\",\n  \"createdAt\": \"1968-08-18T12:47:32.277Z\",\n  \"paidAt\": \"1947-06-04T04:25:09.842Z\",\n  \"externalRef\": \"string\",\n  \"quantity\": 5127,\n  \"creditsApplied\": true,\n  \"checkoutUrl\": \"string\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "members",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "get By Id 3",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/members/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"members",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/members/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"members",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 1590,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"dateOfBirth\": \"1951-04-28\",\n  \"locationId\": 7324,\n  \"locationName\": \"string\",\n  \"totalCredits\": 3250\n}"
+										}
+									]
+								},
+								{
+									"name": "update 3",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"dateOfBirth\": \"1950-08-26\",\n  \"email\": \"string\",\n  \"firstName\": \"strin\",\n  \"lastName\": \"string\",\n  \"locationId\": 3849,\n  \"phone\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/members/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"members",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"dateOfBirth\": \"1950-08-26\",\n  \"email\": \"string\",\n  \"firstName\": \"strin\",\n  \"lastName\": \"string\",\n  \"locationId\": 3849,\n  \"phone\": \"string\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/members/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"members",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 1590,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"dateOfBirth\": \"1951-04-28\",\n  \"locationId\": 7324,\n  \"locationName\": \"string\",\n  \"totalCredits\": 3250\n}"
+										}
+									]
+								},
+								{
+									"name": "delete 3",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/members/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"members",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "No Content",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/members/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"members",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "me",
+							"item": [
+								{
+									"name": "me",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/members/me",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"members",
+												"me"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/members/me",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"members",
+														"me"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 1590,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"dateOfBirth\": \"1951-04-28\",\n  \"locationId\": 7324,\n  \"locationName\": \"string\",\n  \"totalCredits\": 3250\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get All 3",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/members",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"members"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/members",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"members"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 600,\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"email\": \"string\",\n    \"phone\": \"string\",\n    \"dateOfBirth\": \"1949-01-06\",\n    \"locationId\": 3424,\n    \"locationName\": \"string\",\n    \"totalCredits\": 1164\n  },\n  {\n    \"id\": 5422,\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"email\": \"string\",\n    \"phone\": \"string\",\n    \"dateOfBirth\": \"1999-01-02\",\n    \"locationId\": 9899,\n    \"locationName\": \"string\",\n    \"totalCredits\": 9748\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "create 3",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"dateOfBirth\": \"2024-02-02\",\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"locationId\": 4726,\n  \"phone\": \"string\",\n  \"password\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/members",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"members"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"dateOfBirth\": \"2024-02-02\",\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"locationId\": 4726,\n  \"phone\": \"string\",\n  \"password\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/members",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"members"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 1590,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"dateOfBirth\": \"1951-04-28\",\n  \"locationId\": 7324,\n  \"locationName\": \"string\",\n  \"totalCredits\": 3250\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "locations",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "get By Id 4",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/locations/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"locations",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/locations/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"locations",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7506,\n  \"name\": \"string\",\n  \"address\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update 4",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"address\": \"string\",\n  \"name\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/locations/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"locations",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"address\": \"string\",\n  \"name\": \"string\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/locations/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"locations",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7506,\n  \"name\": \"string\",\n  \"address\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete 4",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/locations/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"locations",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "No Content",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/locations/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"locations",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get All 4",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/locations",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/locations",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"locations"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 1751,\n    \"name\": \"string\",\n    \"address\": \"string\"\n  },\n  {\n    \"id\": 4531,\n    \"name\": \"string\",\n    \"address\": \"string\"\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "create 4",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"address\": \"string\",\n  \"name\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/locations",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"address\": \"string\",\n  \"name\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/locations",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"locations"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7506,\n  \"name\": \"string\",\n  \"address\": \"string\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "fitness-services",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "get By Id 5",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/fitness-services/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"fitness-services",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/fitness-services/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"fitness-services",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7243,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"durationMinutes\": 1317,\n  \"price\": 496.1595587065215,\n  \"active\": false,\n  \"locationId\": 9980,\n  \"locationName\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update 5",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"active\": true,\n  \"durationMinutes\": 2996,\n  \"name\": \"string\",\n  \"price\": 1952.0296996078469,\n  \"description\": \"string\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/fitness-services/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"fitness-services",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"active\": true,\n  \"durationMinutes\": 2996,\n  \"name\": \"string\",\n  \"price\": 1952.0296996078469,\n  \"description\": \"string\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/fitness-services/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"fitness-services",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 7243,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"durationMinutes\": 1317,\n  \"price\": 496.1595587065215,\n  \"active\": false,\n  \"locationId\": 9980,\n  \"locationName\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete 5",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/fitness-services/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"fitness-services",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "No Content",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/fitness-services/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"fitness-services",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "active",
+							"item": [
+								{
+									"name": "get Active",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/fitness-services/active",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"fitness-services",
+												"active"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/fitness-services/active",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"fitness-services",
+														"active"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"id\": 1417,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"durationMinutes\": 1661,\n    \"price\": 4044.682829103341,\n    \"active\": true,\n    \"locationId\": 5522,\n    \"locationName\": \"string\"\n  },\n  {\n    \"id\": 1618,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"durationMinutes\": 2033,\n    \"price\": 2675.5114054345386,\n    \"active\": true,\n    \"locationId\": 2810,\n    \"locationName\": \"string\"\n  }\n]"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get All 5",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/fitness-services",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"fitness-services"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/fitness-services",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"fitness-services"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 1417,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"durationMinutes\": 1661,\n    \"price\": 4044.682829103341,\n    \"active\": true,\n    \"locationId\": 5522,\n    \"locationName\": \"string\"\n  },\n  {\n    \"id\": 1618,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"durationMinutes\": 2033,\n    \"price\": 2675.5114054345386,\n    \"active\": true,\n    \"locationId\": 2810,\n    \"locationName\": \"string\"\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "create 5",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"durationMinutes\": 783,\n  \"name\": \"string\",\n  \"price\": 6651.998419980158,\n  \"description\": \"string\",\n  \"active\": true\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/fitness-services",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"fitness-services"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"durationMinutes\": 783,\n  \"name\": \"string\",\n  \"price\": 6651.998419980158,\n  \"description\": \"string\",\n  \"active\": true\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/fitness-services",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"fitness-services"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 7243,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"durationMinutes\": 1317,\n  \"price\": 496.1595587065215,\n  \"active\": false,\n  \"locationId\": 9980,\n  \"locationName\": \"string\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "employees",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "get By Id 6",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/employees/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/employees/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 6082,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"role\": \"string\",\n  \"locationId\": 1999,\n  \"locationName\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update 6",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"locationId\": 7639,\n  \"role\": \"string\",\n  \"phone\": \"st\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/employees/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"locationId\": 7639,\n  \"role\": \"string\",\n  \"phone\": \"st\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/employees/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"id\": 6082,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"role\": \"string\",\n  \"locationId\": 1999,\n  \"locationName\": \"string\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete 6",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/employees/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "No Content",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/employees/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "get All 6",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/employees",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"employees"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/employees",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"employees"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"id\": 6562,\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"email\": \"string\",\n    \"phone\": \"string\",\n    \"role\": \"string\",\n    \"locationId\": 7322,\n    \"locationName\": \"string\"\n  },\n  {\n    \"id\": 8440,\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"email\": \"string\",\n    \"phone\": \"string\",\n    \"role\": \"string\",\n    \"locationId\": 883,\n    \"locationName\": \"string\"\n  }\n]"
+								}
+							]
+						},
+						{
+							"name": "create 6",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"locationId\": 180,\n  \"phone\": \"strin\",\n  \"password\": \"string\",\n  \"authRole\": \"ADMIN\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/employees",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"employees"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"locationId\": 180,\n  \"phone\": \"strin\",\n  \"password\": \"string\",\n  \"authRole\": \"ADMIN\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/employees",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"employees"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": 6082,\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"phone\": \"string\",\n  \"role\": \"string\",\n  \"locationId\": 1999,\n  \"locationName\": \"string\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "stripe",
+					"item": [
+						{
+							"name": "webhook",
+							"item": [
+								{
+									"name": "webhook",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Stripe-Signature",
+												"value": "string"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "string",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/stripe/webhook",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"stripe",
+												"webhook"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Stripe-Signature",
+														"value": "string"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "string",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/stripe/webhook",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"stripe",
+														"webhook"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "string"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "member",
+					"item": [
+						{
+							"name": "sessions",
+							"item": [
+								{
+									"name": "{sessionId}",
+									"item": [
+										{
+											"name": "book",
+											"item": [
+												{
+													"name": "book",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "*/*"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/member/sessions/:sessionId/book?memberId=6287",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"member",
+																"sessions",
+																":sessionId",
+																"book"
+															],
+															"query": [
+																{
+																	"key": "memberId",
+																	"value": "6287"
+																}
+															],
+															"variable": [
+																{
+																	"key": "sessionId",
+																	"value": "6287"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "OK",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "*/*"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/member/sessions/:sessionId/book?memberId=6287",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"member",
+																		"sessions",
+																		":sessionId",
+																		"book"
+																	],
+																	"query": [
+																		{
+																			"key": "memberId",
+																			"value": "6287"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "sessionId",
+																			"value": "6287"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "*/*"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"reservationId\": 3214,\n  \"sessionId\": 7300,\n  \"currentBookings\": 57,\n  \"remainingCreditsForService\": 9769\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "available Sessions",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/member/sessions?memberId=6287&fitnessServiceId=6287&date=4370-07-65",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"member",
+												"sessions"
+											],
+											"query": [
+												{
+													"key": "memberId",
+													"value": "6287"
+												},
+												{
+													"key": "fitnessServiceId",
+													"value": "6287"
+												},
+												{
+													"key": "date",
+													"value": "4370-07-65"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/member/sessions?memberId=6287&fitnessServiceId=6287&date=4370-07-65",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"member",
+														"sessions"
+													],
+													"query": [
+														{
+															"key": "memberId",
+															"value": "6287"
+														},
+														{
+															"key": "fitnessServiceId",
+															"value": "6287"
+														},
+														{
+															"key": "date",
+															"value": "4370-07-65"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  {\n    \"sessionId\": 9069,\n    \"startsAt\": \"1957-01-10T03:15:21.813Z\",\n    \"endsAt\": \"2000-09-28T01:04:57.352Z\",\n    \"capacity\": 9643,\n    \"currentBookings\": 1167,\n    \"locationId\": 5483,\n    \"locationName\": \"string\",\n    \"fitnessServiceId\": 7587,\n    \"fitnessServiceName\": \"string\",\n    \"price\": 5243.373202088095\n  },\n  {\n    \"sessionId\": 9632,\n    \"startsAt\": \"1956-09-02T09:44:56.892Z\",\n    \"endsAt\": \"1965-06-06T07:32:15.780Z\",\n    \"capacity\": 9490,\n    \"currentBookings\": 2667,\n    \"locationId\": 8957,\n    \"locationName\": \"string\",\n    \"fitnessServiceId\": 5659,\n    \"fitnessServiceName\": \"string\",\n    \"price\": 3648.7505968306077\n  }\n]"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "credits",
+							"item": [
+								{
+									"name": "my Credits",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/member/credits?memberId=6287",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"member",
+												"credits"
+											],
+											"query": [
+												{
+													"key": "memberId",
+													"value": "6287"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/member/credits?memberId=6287",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"member",
+														"credits"
+													],
+													"query": [
+														{
+															"key": "memberId",
+															"value": "6287"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"memberId\": 6213,\n  \"totalCredits\": 2874,\n  \"creditsByService\": [\n    {\n      \"fitnessServiceId\": 157,\n      \"fitnessServiceName\": \"string\",\n      \"availableCredits\": 6672\n    },\n    {\n      \"fitnessServiceId\": 9550,\n      \"fitnessServiceName\": \"string\",\n      \"availableCredits\": 5832\n    }\n  ]\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "me",
+							"item": [
+								{
+									"name": "me 1",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/auth/me",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"me"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/auth/me",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"auth",
+														"me"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"email\": \"string\",\n  \"userType\": \"string\",\n  \"authRole\": \"string\",\n  \"authorities\": [\n    \"string\",\n    \"string\"\n  ],\n  \"employeeId\": 574,\n  \"memberId\": 9371,\n  \"locationId\": 2673\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "dev",
+			"item": [
+				{
+					"name": "hash",
+					"item": [
+						{
+							"name": "hash",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/dev/hash?password=string",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"dev",
+										"hash"
+									],
+									"query": [
+										{
+											"key": "password",
+											"value": "string"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/dev/hash?password=string",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"dev",
+												"hash"
+											],
+											"query": [
+												{
+													"key": "password",
+													"value": "string"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "string"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8082"
+		}
+	]
+}
