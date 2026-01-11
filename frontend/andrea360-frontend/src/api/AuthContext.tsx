@@ -7,11 +7,13 @@ import React, {
 } from "react";
 import { fetchMe, type AuthMeResponse } from "../api/auth";
 import { getBasicAuthToken, setBasicAuthToken } from "../api/http";
+import { useNavigate } from "react-router-dom";
 
 type AuthState = {
   me: AuthMeResponse | null;
   isLoading: boolean;
   loginBasic: (email: string, password: string) => Promise<AuthMeResponse>;
+  // logoutAndRedirect: () => void;
   logout: () => void;
 };
 
@@ -22,6 +24,7 @@ function toBasicToken(email: string, password: string) {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  // const navigate = useNavigate();
   const [me, setMe] = useState<AuthMeResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -61,8 +64,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setMe(null);
   }
 
+  function logoutAndRedirect() {
+    logout();
+    // navigate("/", { replace: true });
+  }
+
   const value = useMemo(
-    () => ({ me, isLoading, loginBasic, logout }),
+    () => ({ me, isLoading, loginBasic, logout, logoutAndRedirect }),
     [me, isLoading]
   );
 

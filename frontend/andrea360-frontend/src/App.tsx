@@ -1,4 +1,11 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 
 import { useAuth } from "./api/AuthContext";
 import { LoginLanding } from "./app/pages/auth/LoginLanding";
@@ -19,6 +26,7 @@ import { PurchaseServices } from "./app/components/screens/member/PurchaseServic
 import { MyAppointments } from "./app/components/screens/member/MyAppointments";
 import { MyProfile } from "./app/components/screens/member/MyProfile";
 import { PaymentSuccess } from "./app/components/screens/member/PaymentSuccess";
+import { RequireAuth } from "./app/guards/RequireAuth";
 
 function HomeRedirect() {
   const { me, isLoading } = useAuth();
@@ -35,15 +43,17 @@ export default function App() {
   const { me } = useAuth();
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* auth */}
-        <Route path="/" element={<LoginLanding />} />
-        <Route path="/login/employee" element={<EmployeeLogin />} />
-        <Route path="/login/member" element={<MemberLogin />} />
-        <Route path="/home" element={<HomeRedirect />} />
+    // <BrowserRouter>
+    <Routes>
+      {/* auth */}
+      <Route path="/" element={<LoginLanding />} />
+      <Route path="/login/employee" element={<EmployeeLogin />} />
+      <Route path="/login/member" element={<MemberLogin />} />
 
-        {/* app shell with sidebar */}
+      <Route path="/home" element={<HomeRedirect />} />
+
+      {/* app shell with sidebar */}
+      <Route element={<RequireAuth />}>
         <Route element={<AppShell />}>
           {/* dashboards */}
           <Route path="/admin" element={<AdminDashboard />} />
@@ -133,7 +143,8 @@ export default function App() {
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/home" replace />} />
-      </Routes>
-    </BrowserRouter>
+      </Route>
+    </Routes>
+    // </BrowserRouter>
   );
 }

@@ -95,7 +95,7 @@ export function EmployeeLogin() {
 
             <button
               type="button"
-              onClick={() => nav("/")}
+              onClick={() => nav("/", { replace: true })}
               className="w-full rounded-lg border border-slate-200 bg-white py-2 font-medium text-slate-700 hover:bg-slate-50"
             >
               Back
